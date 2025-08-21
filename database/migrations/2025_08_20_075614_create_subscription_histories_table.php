@@ -11,19 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('subscriptions', function (Blueprint $table) {
+        Schema::create('subscription_histories', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->datetime('start');
             $table->datetime('end');
-            $table->boolean('is_autorenew')->default(1);
             $table->unsignedTinyInteger('status_id');
             $table->foreign('status_id')->references('id')->on('list_statuses')->onDelete('cascade');
-            $table->unsignedInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->unsignedTinyInteger('plan_id');
-            $table->foreign('plan_id')->references('id')->on('plan_pricings')->onDelete('cascade');
-            $table->unique(['plan_id', 'photographer_id']);
+            $table->unsignedInteger('subscription_id');
+            $table->foreign('subscription_id')->references('id')->on('subscriptions')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -33,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('subscriptions');
+        Schema::dropIfExists('subscription_histories');
     }
 };

@@ -13,32 +13,35 @@ class DatabaseSeeder extends Seeder
     {
        
 
-        // \DB::table('users')->insert([
-        //     'username' => 'administrator',
-        //     'email' => 'kradjumli@gmail.com',
-        //     'password' => bcrypt('123456!@#$%'),
-        //     'role' => 'Administrator',
-        //     'is_active' => 1,
-        //     'email_verified_at' => '2024-05-15 08:46:33',
-        //     'created_at' => now(),
-        //     'updated_at' => now()
-        // ]);
+        \DB::table('users')->insert([
+            'username' => 'administrator',
+            'email' => 'kradjumli@gmail.com',
+            'password' => bcrypt('123456!@#$%'),
+            'role' => 'Administrator',
+            'is_active' => 1,
+            'email_verified_at' => '2024-05-15 08:46:33',
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
 
-        // \DB::table('user_profiles')->insert([
-        //     'firstname' => 'Ra-ouf',
-        //     'lastname' => 'Jumli',
-        //     'middlename' => 'Indanan',
-        //     'avatar' => 'avatar.jpg',
-        //     'sex' => 'Male',
-        //     'user_id' => 1,
-        //     'mobile' => '09171531652',
-        //     'created_at' => now(),
-        //     'updated_at' => now(),
-        // ]);
-        // $this->call(ListCountriesTableSeeder::class);
-        // $this->call(ListNamesTableSeeder::class);
-        // $this->call(ListStudiosTableSeeder::class);
-        // $this->call(ListGearsTableSeeder::class);
+        \DB::table('user_profiles')->insert([
+            'firstname' => 'Ra-ouf',
+            'lastname' => 'Jumli',
+            'middlename' => 'Indanan',
+            'avatar' => 'avatar.jpg',
+            'sex' => 'Male',
+            'user_id' => 1,
+            'mobile' => '09171531652',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        $this->call(ListCountriesTableSeeder::class);
+        $this->call(ListNamesTableSeeder::class);
+        $this->call(ListStudiosTableSeeder::class);
+        $this->call(ListGearsTableSeeder::class);
         $this->call(ListCurrenciesTableSeeder::class);
+        $this->call(PlansTableSeeder::class);
+        $this->call(PlanPricingsTableSeeder::class);
+        $this->call(ListStatusesTableSeeder::class);
     }
 }

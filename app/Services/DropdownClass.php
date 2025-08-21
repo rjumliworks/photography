@@ -54,7 +54,7 @@ class DropdownClass
             'pricings.currency' => function($q) {
                 $q->select('id', 'code', 'symbol', 'name');
             }
-        ])->where('is_active',1)->get()->map(function ($item) {
+        ])->where('is_active',1)->where('is_trial',0)->get()->map(function ($item) {
             return [
                 'value' => $item->id,
                 'name' => $item->name,

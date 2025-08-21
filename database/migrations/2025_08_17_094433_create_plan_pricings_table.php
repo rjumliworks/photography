@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('plan_pricings', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->tinyIncrements('id');
-            $table->enum('billing_cycle', ['Monthly','Yearly','Lifetime']);
+            $table->enum('billing_cycle', ['Daily','Monthly','Yearly','Lifetime']);
             $table->decimal('amount', 10, 2);
             $table->decimal('discount', 10, 2)->default(0.00);
             $table->unsignedTinyInteger('currency_id');

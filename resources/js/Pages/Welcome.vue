@@ -51,8 +51,8 @@
                             <p class="lead text-muted lh-base mb-4">Upload and share photos or videos, manage client access, and let them download albums in stunning PDF form — all in one place.</p>
                             
                             <div class="d-flex gap-2 mt-4">
-                                <button @click="openRegister()" class="btn btn-primary">Get Started <i class="ri-arrow-right-line align-middle ms-1"></i></button>
-                                <a href="pages-pricing.html" class="btn btn-danger">View Plans <i class="ri-eye-line align-middle ms-1"></i></a>
+                                <button @click="openRegister()" class="btn btn-primary">Free Trial <i class="ri-arrow-right-line align-middle ms-1"></i></button>
+                                <BLink class="nav-link" href="#plans" @click.prevent="scrollToSection('plans')"><a href="pages-pricing.html" class="btn btn-danger">View Plans <i class="ri-eye-line align-middle ms-1"></i></a></BLink>
                             </div>
 
                             <ul class="treding-keywords list-inline mb-0 mt-3 fs-13">
@@ -338,13 +338,13 @@
                 <BRow class="align-items-center gy-4">
                     <BCol sm="">
                         <div>
-                            <h4 class="text-white fw-semibold">Get New Jobs Notification!</h4>
-                            <p class="text-white text-opacity-75 mb-0">Subscribe & get all related jobs notification.</p>
+                            <h4 class="text-white fs-18 fw-semibold">Capture. Share. Amaze </h4>
+                            <p class="text-white fs-12 text-opacity-75 mb-0">Upload and share photos or videos, manage client access, and let them download albums in stunning PDF form — all in one place.</p>
                         </div>
                     </BCol>
 
                     <BCol sm="auto">
-                        <BButton type="button" variant="danger">Subscribe Now <i
+                        <BButton @click="openRegister()"  type="button" variant="danger">Subscribe Now <i
                                 class="ri-arrow-right-line align-bottom"></i></BButton>
                     </BCol>
 

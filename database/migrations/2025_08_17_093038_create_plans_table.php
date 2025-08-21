@@ -22,6 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('storage_limit');
             $table->unsignedInteger('folders_limit')->default(0);
             $table->json('features');
+            $table->boolean('is_trial')->default(0);
             $table->boolean('is_active')->default(1);
             $table->timestamps();
         });

@@ -51,6 +51,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne('App\Models\Photographer', 'user_id');
     }
 
+    public function subscription()
+    {
+        return $this->hasOne('App\Models\Subscription', 'user_id');
+    }
+
     public function authentications()
     {
         return $this->haMany('App\Models\AuthenticationLog', 'user_id');

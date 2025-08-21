@@ -2,35 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
 
-class Plan extends Model
+class SubscriptionHistory extends Model
 {
     use HasFactory, LogsActivity;
 
     protected $fillable = [
-        'name',
-        'icon',
-        'description',
-        'storage_size',
-        'storage_unit',
-        'storage_limit',
-        'folders_limit',
-        'features',
-        'is_trial',
-        'is_active'
+        'start',
+        'end',
+        'status_id',
+        'subscription_id'
     ];
 
-    protected $casts = [
-        'features' => 'array'
-    ];
-
-    public function pricings()
+    public function subscription()
     {
-        return $this->hasMany('App\Models\PlanPricing', 'plan_id');
+        return $this->belongsTo('App\Models\Subscription', 'subscription_id', 'id');
     }
 
     public function updateIfDirty(array $attributes){
@@ -47,16 +34,13 @@ class Plan extends Model
     public function getActivitylogOptions(): LogOptions {
         return LogOptions::defaults()
         ->logOnly([
-            'name',
-            'description',
-            'storage_size',
-            'storage_unit',
-            'storage_limit',
-            'filders_limit',
-            'features'
+            'start',
+            'end',
+            'status_id',
+            'subscription_id'
         ])
         ->setDescriptionForEvent(fn(string $eventName) => "{$eventName}")
-        ->useLogName('Photographer')
+        ->useLogName('History')
         ->logOnlyDirty()
         ->dontSubmitEmptyLogs();
     }

@@ -40,6 +40,18 @@ class WelcomeController extends Controller
             if($user) {
                 $user->profile()->create($request->all());
                 $user->photographer()->create($request->all());
+                $subsription = $user->subscription()->create([
+                    'plan_id'        => 1,
+                    'status_id'      => 2,
+                    'start'          => now(),
+                    'end'            => now()->addDays(7),
+                    'is_autorenew'   => false, 
+                ]);
+                //  $subsription->histories()->create([
+                //     'status_id'      => 11,
+                //     'start'          => now(),
+                //     'end'            => now()->addDays(7),
+                // ]);
                 Auth::login($user);
             }
 
