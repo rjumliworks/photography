@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Subscription;
 use Illuminate\Http\Request;
 use App\Services\DropdownClass;
+use App\Http\Resources\Photographer\SubscriptionResource;
 
 class DashboardController extends Controller
 {
@@ -18,7 +20,9 @@ class DashboardController extends Controller
             return inertia('Auth/Login');
         }else{
             if(\Auth::user()->role == 'Photographer'){
-                return inertia('Modules/Photographer/Dashboard/Index');
+                return inertia('Modules/Photographer/Dashboard/Index',[
+                    'plan' => new SubscriptionResource(Subscription::with('plan.plan')->where('user_id',\Auth::user()->id)->first())
+                ]);
             }else if(\Auth::user()->role == 'Client'){
 
             }else{

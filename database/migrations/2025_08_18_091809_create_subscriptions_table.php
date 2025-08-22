@@ -23,7 +23,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedTinyInteger('plan_id');
             $table->foreign('plan_id')->references('id')->on('plan_pricings')->onDelete('cascade');
-            $table->unique(['plan_id', 'photographer_id']);
+            $table->unique(['plan_id', 'user_id']);
             $table->timestamps();
         });
     }

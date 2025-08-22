@@ -61,6 +61,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->haMany('App\Models\AuthenticationLog', 'user_id');
     }
 
+    public function folders()
+    {
+        return $this->haMany('App\Models\Folder', 'user_id');
+    }
+
     public function getActivitylogOptions(): LogOptions {
         return LogOptions::defaults()
         ->logOnly(['username','email','is_active'])

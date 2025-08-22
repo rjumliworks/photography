@@ -43,5 +43,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PlansTableSeeder::class);
         $this->call(PlanPricingsTableSeeder::class);
         $this->call(ListStatusesTableSeeder::class);
+        $this->call(ListTagsTableSeeder::class);
+        $this->call(ListDropdownsTableSeeder::class);
     }
 }

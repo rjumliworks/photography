@@ -16,6 +16,8 @@ return new class extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('path');
+            $table->string('mime_type', 100);
+            $table->unsignedBigInteger('size');
             $table->string('description')->nullable();
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

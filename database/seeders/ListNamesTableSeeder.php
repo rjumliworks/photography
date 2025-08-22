@@ -1048,6 +1048,66 @@ class ListNamesTableSeeder extends Seeder
                 'created_at' => '2025-08-16 16:57:10',
                 'updated_at' => '2025-08-16 16:57:10',
             ),
+            103 => 
+            array (
+                'id' => 104,
+                'name' => 'Weddings & Love',
+                'short' => NULL,
+                'type' => 'Category',
+                'is_active' => 1,
+                'created_at' => '2025-08-16 16:57:10',
+                'updated_at' => '2025-08-16 16:57:10',
+            ),
+            104 => 
+            array (
+                'id' => 105,
+                'name' => 'Family & Personal',
+                'short' => NULL,
+                'type' => 'Category',
+                'is_active' => 1,
+                'created_at' => '2025-08-16 16:57:10',
+                'updated_at' => '2025-08-16 16:57:10',
+            ),
+            105 => 
+            array (
+                'id' => 106,
+                'name' => 'Celebrations & Social',
+                'short' => NULL,
+                'type' => 'Category',
+                'is_active' => 1,
+                'created_at' => '2025-08-16 16:57:10',
+                'updated_at' => '2025-08-16 16:57:10',
+            ),
+            106 => 
+            array (
+                'id' => 107,
+                'name' => 'Professional & Creative',
+                'short' => NULL,
+                'type' => 'Category',
+                'is_active' => 1,
+                'created_at' => '2025-08-16 16:57:10',
+                'updated_at' => '2025-08-16 16:57:10',
+            ),
+            107 => 
+            array (
+                'id' => 108,
+                'name' => 'Outdoor & Lifestyle',
+                'short' => NULL,
+                'type' => 'Category',
+                'is_active' => 1,
+                'created_at' => '2025-08-16 16:57:10',
+                'updated_at' => '2025-08-16 16:57:10',
+            ),
+            108 => 
+            array (
+                'id' => 109,
+                'name' => 'Arts & Special',
+                'short' => NULL,
+                'type' => 'Category',
+                'is_active' => 1,
+                'created_at' => '2025-08-16 16:57:10',
+                'updated_at' => '2025-08-16 16:57:10',
+            ),
         ));
 
         

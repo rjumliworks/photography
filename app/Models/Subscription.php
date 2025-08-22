@@ -24,6 +24,11 @@ class Subscription extends Model
         return $this->hasMany('App\Models\SubscriptionHistory', 'subscription_id');
     }
 
+    public function plan()
+    {
+        return $this->belongsTo('App\Models\PlanPricing', 'plan_id', 'id');
+    }
+
     public function updateIfDirty(array $attributes){
         $this->fill($attributes);
         $dirtyAttributes = $this->getDirty();
@@ -48,6 +53,16 @@ class Subscription extends Model
         ->useLogName('Photographer')
         ->logOnlyDirty()
         ->dontSubmitEmptyLogs();
+    }
+
+    public function getStartAttribute($value)
+    {
+        return date('F d, Y g:i a', strtotime($value));
+    }
+
+    public function getEndAttribute($value)
+    {
+        return date('F d, Y g:i a', strtotime($value));
     }
 
     public function getUpdatedAtAttribute($value)
