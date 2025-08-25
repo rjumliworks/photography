@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreign('tag_id')->references('id')->on('list_tags')->onDelete('cascade');
             $table->unsignedInteger('folder_id');
             $table->foreign('folder_id')->references('id')->on('folders')->onDelete('cascade');
+            $table->unique(['folder_id', 'tag_id']);
             $table->timestamps();
         });
     }

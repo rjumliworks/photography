@@ -57,12 +57,12 @@ class Subscription extends Model
 
     public function getStartAttribute($value)
     {
-        return date('F d, Y g:i a', strtotime($value));
+        return date('M d, Y g:i a', strtotime($value));
     }
 
     public function getEndAttribute($value)
     {
-        return date('F d, Y g:i a', strtotime($value));
+        return date('M d, Y g:i a', strtotime($value));
     }
 
     public function getUpdatedAtAttribute($value)

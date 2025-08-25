@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Subscription;
 use Illuminate\Http\Request;
 use App\Services\DropdownClass;
-use App\Http\Resources\Photographer\SubscriptionResource;
+use App\Services\Dashboard\PhotographerClass;
 
 class DashboardController extends Controller
 {
+    protected $dropdown, $photographer;
+
     public function __construct(
         DropdownClass $dropdown,
+        PhotographerClass $photographer
     ){
         $this->dropdown = $dropdown;
+        $this->photographer = $photographer;
     }
 
     public function index(Request $request){
@@ -21,7 +24,9 @@ class DashboardController extends Controller
         }else{
             if(\Auth::user()->role == 'Photographer'){
                 return inertia('Modules/Photographer/Dashboard/Index',[
-                    'plan' => new SubscriptionResource(Subscription::with('plan.plan')->where('user_id',\Auth::user()->id)->first())
+                    'plan' => $this->photographer->plan(),
+                    'used' => $this->photographer->used(),
+                    'folders' => $this->photographer->folders()
                 ]);
             }else if(\Auth::user()->role == 'Client'){
 
@@ -35,7 +40,9 @@ class DashboardController extends Controller
     public function search(Request $request){
         $option = $request->option;
         switch($option){
-           
+            case 'tags':
+                return $this->dropdown->tags($request->keyword);
+            break;
         }
     }
 }

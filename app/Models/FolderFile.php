@@ -6,21 +6,27 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class FolderFile extends Model
 {
-    use HasFactory, LogsActivity;
+    use HasFactory, LogsActivity, SoftDeletes;
 
     protected $fillable = [
         'name',
         'path',
         'mime_type',
         'size',
-        'description',
+        'text',
         'user_id',
         'folder_id',
-        'opened_at'
+        'opened_at',
+        'meta',
+        'kind',
+        'status'
     ];
+
+    protected $casts = ['meta' => 'array'];
 
     public function folder()
     {
@@ -45,10 +51,12 @@ class FolderFile extends Model
             'path',
             'mime_type',
             'size',
-            'description',
+            'text',
             'user_id',
             'folder_id',
-            'opened_at'
+            'opened_at',
+            'meta',
+            'kind'
         ])
         ->setDescriptionForEvent(fn(string $eventName) => "{$eventName}")
         ->useLogName('File')
@@ -58,7 +66,7 @@ class FolderFile extends Model
 
     public function getOpenedAtAttribute($value)
     {
-        return date('F d, Y g:i a', strtotime($value));
+        return ($value) ? date('F d, Y g:i a', strtotime($value)) : null;
     }
 
     public function getUpdatedAtAttribute($value)

@@ -1,10 +1,10 @@
 <template>
     <b-row class="g-3">
         <div class="col-md-3">
-            <Sidebar :plan="plan" ref="sidebar"/>
+            <Sidebar :plan="plan" :folder_count="folders.data.length" :used="used" ref="sidebar"/>
         </div>
         <div class="col-md-9">
-            <Main ref="main"/>
+            <Main :folders="folders.data" ref="main"/>
         </div>
     </b-row>
 </template>
@@ -13,6 +13,6 @@ import Main from './Components/Main.vue';
 import Sidebar from './Components/Sidebar.vue';
 export default {
     components: { Main, Sidebar },
-    props: ['plan']
+    props: ['plan','used','folders']
 }
 </script>

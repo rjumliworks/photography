@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Folder extends Model
 {
-    use HasFactory, LogsActivity;
+    use HasFactory, LogsActivity, SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -20,6 +21,8 @@ class Folder extends Model
         'opened_at'
     ];
 
+    protected $appends = ['size','count'];
+
     public function user()
     {
         return $this->belongsTo('App\Models\User', 'user_id', 'id');
@@ -27,7 +30,7 @@ class Folder extends Model
 
     public function files()
     {
-        return $this->hasMany('App\Models\FolderFile', 'folder_id');
+        return $this->hasMany('App\Models\FolderFile', 'folder_id')->orderBy('updated_at','DESC');
     }
 
     public function passwords()
@@ -37,12 +40,27 @@ class Folder extends Model
 
     public function tags()
     {
-        return $this->hasMany('App\Models\FolderTag', 'folder_id');
+        return $this->belongsToMany(ListTag::class, 'folder_tags', 'folder_id', 'tag_id')->withTimestamps();
     }
 
     public function gears()
     {
-        return $this->hasMany('App\Models\ListGear', 'folder_id');
+        return $this->hasMany('App\Models\FolderGear', 'folder_id');
+    }
+
+    public function getCountAttribute()
+    {
+        return $this->files()->count();
+    }
+
+    public function getSizeAttribute()
+    {
+        $bytes = $this->files()->sum('size');
+
+        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+        $i = $bytes > 0 ? floor(log($bytes, 1024)) : 0;
+
+        return round($bytes / pow(1024, $i), 2).' '.$units[$i];
     }
 
     public function updateIfDirty(array $attributes){

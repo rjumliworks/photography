@@ -17,6 +17,10 @@ Route::middleware(['2fa','auth','verified','checkactive'])->group(function () {
         Route::resource('/plans', App\Http\Controllers\Administrator\PlanController::class);
     });
 
+    Route::resource('/folders', App\Http\Controllers\Common\FolderController::class);
+    Route::resource('/files', App\Http\Controllers\Common\FileController::class);
+    Route::resource('/trash', App\Http\Controllers\Common\TrashController::class);
+
 });
 
 require __DIR__.'/auth.php';

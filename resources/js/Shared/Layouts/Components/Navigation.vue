@@ -295,7 +295,7 @@
                                     <span
                                         class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ $page.props.user.data.name }}</span>
                                     <span
-                                        class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">{{ $page.props.user.data.name }}</span>
+                                        class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">{{ $page.props.user.data.email }}</span>
                                 </span>
                             </span>
                         </template>

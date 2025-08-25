@@ -16,7 +16,7 @@ class PlanResource extends JsonResource
             'storage_size' => $this->plan->storage_size,
             'storage_unit' => $this->plan->storage_unit,
             'storage_limit' => $this->plan->storage_limit,
-            'folders_limit' => $this->plan->foldes_limit,
+            'folders_limit' => $this->plan->folders_limit,
             'billing_cycle' => $this->billing_cycle,
             'features' => $this->features,
             'is_trial' => $this->is_trial,

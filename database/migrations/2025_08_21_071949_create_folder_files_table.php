@@ -18,12 +18,16 @@ return new class extends Migration
             $table->string('path');
             $table->string('mime_type', 100);
             $table->unsignedBigInteger('size');
-            $table->string('description')->nullable();
+            $table->string('text')->nullable();
+            $table->json('meta')->nullable();
+            $table->enum('kind', ['image','video']);
+            $table->enum('status', ['pending','uploading','processing','completed','failed'])->default('pending');
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedInteger('folder_id');
             $table->foreign('folder_id')->references('id')->on('folders')->onDelete('cascade');
-            $table->datetime('opened_at');
+            $table->datetime('opened_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

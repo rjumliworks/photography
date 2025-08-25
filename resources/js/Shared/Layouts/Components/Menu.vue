@@ -9,6 +9,33 @@
                 <span class="fw-semibold fs-14" data-key="t-dashboards">Dashboard</span>
                 </Link>
             </li>
+            <template v-if="$page.props.user.data.role == 'Photographer'">
+                <li class="menu-title">
+                    <i class="ri-more-fill" aria-expanded="false"></i>
+                    <span data-key="t-menu">Lists</span>
+                </li>
+                <li class="nav-item">
+                    <Link href="/folders" class="nav-link menu-link"
+                    :class="{'active': $page.component.startsWith('Modules/Photographer/Folders') }">
+                    <i class="ri-folder-2-fill"></i>
+                    <span class="fw-semibold fs-14" data-key="t-dashboards">Folders</span>
+                    </Link>
+                </li>
+                <li class="nav-item">
+                    <Link href="/files" class="nav-link menu-link"
+                    :class="{'active': $page.component.startsWith('Modules/Photographer/Files') }">
+                    <i class="ri-file-fill"></i>
+                    <span class="fw-semibold fs-14" data-key="t-dashboards">Files</span>
+                    </Link>
+                </li>
+                <li class="nav-item">
+                    <Link href="/trash" class="nav-link menu-link"
+                    :class="{'active': $page.component.startsWith('Modules/Photographer/Trash') }">
+                    <i class="ri-delete-bin-fill"></i>
+                    <span class="fw-semibold fs-14" data-key="t-dashboards">Trash</span>
+                    </Link>
+                </li>
+            </template>
             <template v-if="$page.props.user.data.role == 'Administrator'">
                 <li class="menu-title">
                     <i class="ri-more-fill" aria-expanded="false"></i>

@@ -20,7 +20,8 @@ return new class extends Migration
             $table->boolean('is_protected')->default(false);
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->datetime('opened_at');
+            $table->datetime('opened_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

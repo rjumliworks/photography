@@ -63,7 +63,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function folders()
     {
-        return $this->haMany('App\Models\Folder', 'user_id');
+        return $this->hasMany('App\Models\Folder', 'user_id');
     }
 
     public function getActivitylogOptions(): LogOptions {
