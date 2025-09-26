@@ -23,20 +23,27 @@
         <div class="card-body border-bottom bg-white">
             <div class="d-flex mb-0">
                 <div class="flex-shrink-0 me-3">
-                    <p class="mb-0 text-primary fs-12 fw-semibold">My Folders</p>
+                    <p class="mb-0 text-primary fs-12 fw-semibold">My Folders ({{ folders.length }})</p>
                 </div>
                 <div class="flex-grow-1">
                     
                 </div>
                 <div class="flex-shrink-0">
-                    <button @click="openCreate()" class="btn btn-sm btn-primary float-end" style="margin-top: -5px; margin-bottom: -5px;">
+                    <button @click="openCreate()" class="btn btn-sm btn-primary float-end" 
+                    :disabled="plan.data.plan.folders_limit >= folders.length"
+                    style="margin-top: -5px; margin-bottom: -5px;">
                         <i class="ri-add-circle-fill align-bottom"></i> New Folder
                     </button>
                 </div>
             </div>
         </div>
-        <div class="card bg-white shadow-none mb-0" style="height: 200px; overflow: hidden;">
+        <div class="card bg-white shadow-none mb-n4" style="min-height: 200px; overflow: hidden;">
             <div class="p-4 mb-n3">
+                <div class="fs-12 alert alert-danger alert-dismissible alert-label-icon label-arrow fade show mt-n1 material-shadow" v-if="plan.data.plan.folders_limit >= folders.length" role="alert">
+                    <i class="ri-error-warning-line label-icon"></i><strong>Folder creation limit reached</strong>
+                    - Please remove or manage existing folders before creating new ones.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
                 <div class="row" id="folderlist-data">
                     <div class="col-xxl-2 col-3 folder-card" v-for="(list,index) in folders" v-bind:key="index">
                         <div class="card bg-light shadow-none" id="folder-1">
@@ -97,7 +104,7 @@
             </div>
 
         </div>
-        <div class="card bg-white border-bottom shadow-none mb-0" style="height: calc(100vh - 500px); overflow: hidden;">
+        <div class="card bg-white border-bottom shadow-none mb-0" style="height: calc(100vh - 559px); overflow: hidden;">
             <hr class="text-muted"/>
                 <div class="d-flex mb-0 ms-3 me-3">
                     <div class="flex-shrink-0 me-3">
@@ -128,14 +135,13 @@
                 </table>
             </div>
         </div>
-        
     </div>
     <Create ref="create"/>
 </template>
 <script>
 import Create from '../../Folders/Modals/Create.vue';
 export default {
-    props: ['folders'],
+    props: ['folders','plan'],
     components: { Create },
     data(){
         return {

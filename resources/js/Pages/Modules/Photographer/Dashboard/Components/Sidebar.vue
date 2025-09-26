@@ -86,8 +86,8 @@
                             </div>
                         </div>
                         <div class="flex-grow-1 overflow-hidden">
-                            <p class="mb-0 text-muted fs-11">{{ (plan.data.plan.name == '7-Day Free Trial') ? 'Trial Start' : 'Subscription Start'}} :</p>
-                            <h6 class="text-truncate fw-semibold fs-12 mb-0">{{ plan.data.start }}</h6>
+                            <p class="mb-0 text-muted fs-10">{{ (plan.data.plan.name == '7-Day Free Trial') ? 'Trial Start' : 'Subscription Start'}} :</p>
+                            <h6 class="text-truncate fw-semibold fs-11 mb-0">{{ plan.data.start }}</h6>
                         </div>
                     </div>
                 </div>
@@ -98,8 +98,8 @@
                             </div>
                         </div>
                         <div class="flex-grow-1 overflow-hidden">
-                            <p class="mb-0 text-muted fs-11">{{ (plan.data.plan.name == '7-Day Free Trial') ? 'Trial Ends' : 'Subscription End'}} :</p>
-                            <h6 class="text-truncate fw-semibold fs-12 mb-0">{{ plan.data.end }}</h6>
+                            <p class="mb-0 text-muted fs-10">{{ (plan.data.plan.name == '7-Day Free Trial') ? 'Trial Ends' : 'Subscription End'}} :</p>
+                            <h6 class="text-truncate fw-semibold fs-11 mb-0">{{ plan.data.end }}</h6>
                         </div>
                     </div>
                 </div>

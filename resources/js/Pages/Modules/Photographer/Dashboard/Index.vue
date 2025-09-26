@@ -4,7 +4,7 @@
             <Sidebar :plan="plan" :folder_count="folders.data.length" :used="used" ref="sidebar"/>
         </div>
         <div class="col-md-9">
-            <Main :folders="folders.data" ref="main"/>
+            <Main :plan="plan" :folders="folders.data" ref="main"/>
         </div>
     </b-row>
 </template>
