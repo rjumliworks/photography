@@ -121,17 +121,63 @@
                 </div>
             <hr class="text-muted mb-3"/>
             <div class="table-responsive table-card">
-                <table class="table table-nowrap table-bordered align-middle m-0">
+                <table class="table table-nowrap align-middle m-0">
                     <thead class="table-light thead-fixed">
                         <tr class="fs-11">
-                            <th style="width: 4%;" class="text-center">#</th>
-                            <th style="width: 20%;">Name</th>
+                            <th style="width: 6%;" class="text-center">#</th>
+                            <th>Name</th>
                             <th style="width: 10%;" class="text-center">File Size</th>
-                            <th style="width: 10%;" class="text-center">Location</th>
-                            <th style="width: 10%;" class="text-center">Last Opened</th>
-                            <th style="width: 10%;" class="text-center">Date Created</th>
+                            <th style="width: 15%;" class="text-center">Folder</th>
+                            <th style="width: 18%;" class="text-center">Created Date</th>
+                            <th style="width: 5%;"></th>
                         </tr>
                     </thead>
+                    <tbody class="table-white fs-12">
+                        <tr v-for="(list,index) in files" v-bind:key="index" @click="selectRow(index)"
+                            :class="{ 'bg-info-subtle': selectedRow === index }">
+                            <td class="text-center">{{ index + 1 }}.</td>
+                            <td>
+                                <h5 class="fs-12 mb-0 fw-semibold text-primary">{{list.name }}</h5>
+                                <p class="fs-11 text-muted mb-0">{{list.path}}</p>
+                            </td>
+                            <td class="text-center">{{ list.size}}</td>
+                            <td class="text-center">{{ list.folder.name}}</td>
+                            <td class="text-center">{{ list.created_at }}</td>
+                          
+                            <td>
+                                <div class="d-flex gap-3 justify-content-center">
+                                    <div class="dropdown"> 
+                                        <button class="btn btn-light btn-icon btn-sm dropdown material-shadow-none" type="button" data-bs-toggle="dropdown" aria-expanded="false"> <i class="ri-more-fill align-bottom"></i> </button>
+                                        <ul class="dropdown-menu dropdownmenu-primary dropdown-menu-end">
+                                            <li>
+                                                <Link :href="`/folders/${list.code}`" class="dropdown-item d-flex align-items-center" role="button">
+                                                    <i class="ri-eye-fill me-2"></i> View
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <a @click="openUpdate(list,index)" class="dropdown-item d-flex align-items-center" role="button">
+                                                    <i class="ri-edit-2-fill me-2"></i> Update
+                                                </a>
+                                            </li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-center" role="button">
+                                                    <i class="ri-download-2-fill me-2"></i> Download
+                                                </a>
+                                            </li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-center text-danger" href="#removeFileItemModal" data-id="1" data-bs-toggle="modal" role="button">
+                                                    <i class="ri-delete-bin-6-fill me-2"></i> Move to trash
+                                                </a>
+                                            </li>
+                                        </ul>
+
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -141,7 +187,7 @@
 <script>
 import Create from '../../Folders/Modals/Create.vue';
 export default {
-    props: ['folders','plan'],
+    props: ['folders','plan','files'],
     components: { Create },
     data(){
         return {

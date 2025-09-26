@@ -26,7 +26,8 @@ class DashboardController extends Controller
                 return inertia('Modules/Photographer/Dashboard/Index',[
                     'plan' => $this->photographer->plan(),
                     'used' => $this->photographer->used(),
-                    'folders' => $this->photographer->folders()
+                    'folders' => $this->photographer->folders(),
+                    'files' => $this->photographer->files()
                 ]);
             }else if(\Auth::user()->role == 'Client'){
 

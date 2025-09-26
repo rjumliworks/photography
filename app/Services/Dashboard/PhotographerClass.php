@@ -6,6 +6,7 @@ use App\Models\Folder;
 use App\Models\FolderFile;
 use App\Models\Subscription;
 use App\Traits\HandlesSize;
+use App\Http\Resources\Common\FileResource;
 use App\Http\Resources\Common\FolderResource;
 use App\Http\Resources\Photographer\SubscriptionResource;
 
@@ -26,6 +27,14 @@ class PhotographerClass
     public function folders(){
         $data = Folder::where('user_id',$this->user)->get();
         return FolderResource::collection($data);
+    }
+
+    public function files(){
+        $id = \Auth::user()->id;
+        $data = FolderFile::with('folder')->whereHas('folder',function ($query) use ($id) {
+            $query->where('user_id',$id);
+        })->orderBy('created_at','DESC')->limit(5)->get();
+        return FileResource::collection($data);
     }
 
     public function used(){
