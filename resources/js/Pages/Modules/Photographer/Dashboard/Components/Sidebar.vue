@@ -54,7 +54,7 @@
                             <p class="fs-11 mb-0 text-muted">You can create up to {{ plan.data.plan.folders_limit }} folders with your plan</p>
                         </div>
                         <div class="flex-shrink-0 text-end">
-                            <h6 class="mt-2 me-2 fs-12">{{ folder_count }}</h6>
+                            <h6 class="mt-2 me-2 fs-12">{{ folder_count }} of {{ plan.data.plan.folders_limit }}</h6>
                         </div>
                     </div>
                 </li>

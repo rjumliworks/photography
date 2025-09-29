@@ -20,134 +20,51 @@
                 <div class="flex-shrink-0"></div>
             </div>
         </div>
+
         <div class="card-body border-bottom bg-white">
             <div class="d-flex mb-0">
                 <div class="flex-shrink-0 me-3">
                     <p class="mb-0 text-primary fs-12 fw-semibold">My Folders ({{ folders.length }})</p>
                 </div>
-                <div class="flex-grow-1">
-                    
-                </div>
+                <div class="flex-grow-1"></div>
                 <div class="flex-shrink-0">
                     <button @click="openCreate()" class="btn btn-sm btn-primary float-end" 
-                    :disabled="plan.data.plan.folders_limit >= folders.length"
-                    style="margin-top: -5px; margin-bottom: -5px;">
+                        :disabled="folders.length >= plan.data.plan.folders_limit"
+                        style="margin-top: -5px; margin-bottom: -5px;">
                         <i class="ri-add-circle-fill align-bottom"></i> New Folder
                     </button>
                 </div>
             </div>
         </div>
-        <div class="card bg-white shadow-none mb-n4" style="min-height: 200px; overflow: hidden;">
-            <div class="p-4 mb-n3">
-                <div class="fs-12 alert alert-danger alert-dismissible alert-label-icon label-arrow fade show mt-n1 material-shadow" v-if="plan.data.plan.folders_limit >= folders.length" role="alert">
-                    <i class="ri-error-warning-line label-icon"></i><strong>Folder creation limit reached</strong>
+
+        <!-- Folder list card -->
+        <div class="card bg-white shadow-none mb-n4 d-flex" :style="(folders.length > 0) ? 'min-height: 200px;' : 'min-height: 284px;'">
+
+            <div class="p-4 mb-n3 flex-grow-1 d-flex flex-column">
+                <!-- Alert -->
+                <div class="fs-12 alert alert-danger alert-dismissible alert-label-icon label-arrow fade show mt-n1 material-shadow" 
+                    v-if="folders.length >= plan.data.plan.folders_limit" role="alert">
+                    <i class="ri-error-warning-line label-icon"></i>
+                    <strong>Folder creation limit reached</strong>
                     - Please remove or manage existing folders before creating new ones.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <!-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> -->
                 </div>
-                <div class="row" id="folderlist-data">
-                    <div class="col-xxl-2 col-3 folder-card" v-for="(list,index) in folders" v-bind:key="index">
-                        <div class="card bg-light shadow-none" id="folder-1">
+
+                <!-- Folder list -->
+                <div class="row flex-grow-1" id="folderlist-data" v-if="folders.length > 0">
+                    <div class="col-xxl-2 col-3 folder-card" v-for="(list,index) in folders" :key="index">
+                        <div class="card bg-light shadow-none">
                             <div class="card-body">
                                 <div class="d-flex mb-n2">
                                     <div class="form-check form-check-danger mb-3 fs-15 flex-grow-1">
-                                        <input class="form-check-input" type="checkbox" value="" id="folderlistCheckbox_1">
-                                        <label class="form-check-label" for="folderlistCheckbox_1"></label>
+                                        <input class="form-check-input" type="checkbox" :id="`folderlistCheckbox_${index}`">
+                                        <label class="form-check-label" :for="`folderlistCheckbox_${index}`"></label>
                                     </div>
-                                    <div class="dropdown">
+                                    <div class="dropdown" data-bs-container="body" data-bs-display="static">
                                         <button class="btn btn-ghost-primary btn-icon btn-sm dropdown material-shadow-none"
                                             type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="ri-more-2-fill fs-16 align-bottom"></i>
                                         </button>
-                                        <ul class="dropdown">
-                                            <ul class="dropdown-menu dropdownmenu-primary dropdown-menu-end">
-                                                <li>
-                                                    <Link :href="`/folders/${list.code}`" class="dropdown-item d-flex align-items-center" role="button">
-                                                        <i class="ri-eye-fill me-2"></i> View
-                                                    </Link>
-                                                </li>
-                                                <li>
-                                                    <a @click="openUpdate(list,index)" class="dropdown-item d-flex align-items-center" role="button">
-                                                        <i class="ri-edit-2-fill me-2"></i> Update
-                                                    </a>
-                                                </li>
-                                                <li><hr class="dropdown-divider"></li>
-                                                <li>
-                                                    <a class="dropdown-item d-flex align-items-center" role="button">
-                                                        <i class="ri-download-2-fill me-2"></i> Download
-                                                    </a>
-                                                </li>
-                                                <li><hr class="dropdown-divider"></li>
-                                                <li>
-                                                    <a class="dropdown-item d-flex align-items-center text-danger" href="#removeFileItemModal" data-id="1" data-bs-toggle="modal" role="button">
-                                                        <i class="ri-delete-bin-6-fill me-2"></i> Move to trash
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div class="text-center">
-                                    <div class="mb-0">
-                                        <i class="ri-folder-2-fill align-bottom text-warning display-6"></i>
-                                    </div>
-                                    <h6 class="fs-12 text-truncate folder-name">{{ list.name }}</h6>
-                                </div>
-                                <div class="hstack mt-4 text-muted fs-12">
-                                    <span class="me-auto"><b>{{ list.count }}</b> Files</span>
-                                    <span><b>{{ list.size }}</b></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>               
-                </div>
-            </div>
-
-        </div>
-        <div class="card bg-white border-bottom shadow-none mb-0" style="height: calc(100vh - 559px); overflow: hidden;">
-            <hr class="text-muted"/>
-                <div class="d-flex mb-0 ms-3 me-3">
-                    <div class="flex-shrink-0 me-3">
-                        <p class="mb-0 text-primary fs-12 fw-semibold">Recent Uploads</p>
-                    </div>
-                    <div class="flex-grow-1">
-                        
-                    </div>
-                    <div class="flex-shrink-0">
-                        <!-- <button class="btn btn-sm btn-primary float-end" style="margin-top: -5px; margin-bottom: -5px;">
-                            <i class="ri-add-circle-fill align-bottom"></i> New Folder
-                        </button> -->
-                    </div>
-                </div>
-            <hr class="text-muted mb-3"/>
-            <div class="table-responsive table-card">
-                <table class="table table-nowrap align-middle m-0">
-                    <thead class="table-light thead-fixed">
-                        <tr class="fs-11">
-                            <th style="width: 6%;" class="text-center">#</th>
-                            <th>Name</th>
-                            <th style="width: 10%;" class="text-center">File Size</th>
-                            <th style="width: 15%;" class="text-center">Folder</th>
-                            <th style="width: 18%;" class="text-center">Created Date</th>
-                            <th style="width: 5%;"></th>
-                        </tr>
-                    </thead>
-                    <tbody class="table-white fs-12">
-                        <tr v-for="(list,index) in files" v-bind:key="index" @click="selectRow(index)"
-                            :class="{ 'bg-info-subtle': selectedRow === index }">
-                            <td class="text-center">{{ index + 1 }}.</td>
-                            <td>
-                                <h5 class="fs-12 mb-0 fw-semibold text-primary">{{list.name }}</h5>
-                                <p class="fs-11 text-muted mb-0">{{list.path}}</p>
-                            </td>
-                            <td class="text-center">{{ list.size}}</td>
-                            <td class="text-center">{{ list.folder.name}}</td>
-                            <td class="text-center">{{ list.created_at }}</td>
-                          
-                            <td>
-                                <div class="d-flex gap-3 justify-content-center">
-                                    <div class="dropdown"> 
-                                        <button class="btn btn-light btn-icon btn-sm dropdown material-shadow-none" type="button" data-bs-toggle="dropdown" aria-expanded="false"> <i class="ri-more-fill align-bottom"></i> </button>
                                         <ul class="dropdown-menu dropdownmenu-primary dropdown-menu-end">
                                             <li>
                                                 <Link :href="`/folders/${list.code}`" class="dropdown-item d-flex align-items-center" role="button">
@@ -172,7 +89,99 @@
                                                 </a>
                                             </li>
                                         </ul>
+                                    </div>
+                                </div>
 
+                                <div class="text-center">
+                                    <div class="mb-0">
+                                        <i class="ri-folder-2-fill align-bottom text-warning display-6"></i>
+                                    </div>
+                                    <h6 class="fs-12 text-truncate folder-name">{{ list.name }}</h6>
+                                </div>
+                                <div class="hstack mt-4 text-muted fs-12">
+                                    <span class="me-auto"><b>{{ list.count }}</b> Files</span>
+                                    <span><b>{{ list.size }}</b></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>               
+                </div>
+
+                <!-- Empty state -->
+                <div v-else class="flex-grow-1 d-flex justify-content-center align-items-center">
+                    <div class="p-4 w-auto border rounded bg-light-subtle text-center">
+                        <p class="mb-0 text-muted fw-semibold">Looks like your folder list is empty. Create one to get started!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent uploads -->
+        <div class="card bg-white border-bottom shadow-none mb-0" 
+             style="height: calc(100vh - 559px); overflow: hidden;">
+            <hr class="text-muted"/>
+            <div class="d-flex mb-0 ms-3 me-3">
+                <div class="flex-shrink-0 me-3">
+                    <p class="mb-0 text-primary fs-12 fw-semibold">Recent Uploads</p>
+                </div>
+                <div class="flex-grow-1"></div>
+                <div class="flex-shrink-0"></div>
+            </div>
+            <hr class="text-muted mb-3"/>
+            <div class="table-responsive table-card">
+                <table class="table table-nowrap align-middle m-0">
+                    <thead class="table-light thead-fixed">
+                        <tr class="fs-11">
+                            <th style="width: 6%;" class="text-center">#</th>
+                            <th>Name</th>
+                            <th style="width: 10%;" class="text-center">File Size</th>
+                            <th style="width: 15%;" class="text-center">Folder</th>
+                            <th style="width: 18%;" class="text-center">Created Date</th>
+                            <th style="width: 5%;"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-white fs-12">
+                        <tr v-for="(list,index) in files" :key="index" @click="selectRow(index)"
+                            :class="{ 'bg-info-subtle': selectedRow === index }">
+                            <td class="text-center">{{ index + 1 }}.</td>
+                            <td>
+                                <h5 class="fs-12 mb-0 fw-semibold text-primary">{{ list.name }}</h5>
+                                <p class="fs-11 text-muted mb-0">{{ list.path }}</p>
+                            </td>
+                            <td class="text-center">{{ list.size }}</td>
+                            <td class="text-center">{{ list.folder.name }}</td>
+                            <td class="text-center">{{ list.created_at }}</td>
+                            <td>
+                                <div class="d-flex gap-3 justify-content-center">
+                                    <div class="dropdown"> 
+                                        <button class="btn btn-light btn-icon btn-sm dropdown material-shadow-none" 
+                                            type="button" data-bs-toggle="dropdown" aria-expanded="false"> 
+                                            <i class="ri-more-fill align-bottom"></i> 
+                                        </button>
+                                        <ul class="dropdown-menu dropdownmenu-primary dropdown-menu-end">
+                                            <li>
+                                                <Link :href="`/folders/${list.code}`" class="dropdown-item d-flex align-items-center" role="button">
+                                                    <i class="ri-eye-fill me-2"></i> View
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <a @click="openUpdate(list,index)" class="dropdown-item d-flex align-items-center" role="button">
+                                                    <i class="ri-edit-2-fill me-2"></i> Update
+                                                </a>
+                                            </li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-center" role="button">
+                                                    <i class="ri-download-2-fill me-2"></i> Download
+                                                </a>
+                                            </li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-center text-danger" href="#removeFileItemModal" data-id="1" data-bs-toggle="modal" role="button">
+                                                    <i class="ri-delete-bin-6-fill me-2"></i> Move to trash
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                             </td>
@@ -184,19 +193,27 @@
     </div>
     <Create ref="create"/>
 </template>
+
 <script>
 import Create from '../../Folders/Modals/Create.vue';
+
 export default {
     props: ['folders','plan','files'],
     components: { Create },
     data(){
         return {
-
+            selectedRow: null
         }
     },
     methods: { 
         openCreate(){
             this.$refs.create.show();
+        },
+        openUpdate(list, index){
+            console.log('update folder', list, index);
+        },
+        selectRow(index){
+            this.selectedRow = index;
         }
     }
 }

@@ -31,7 +31,7 @@ class ViewClass
 
         $data = new FolderViewResource(
             Folder::query()
-            ->with('files')
+            ->with('files.user.profile','files.comments.user.profile','files.likes.user.profile')
             ->with('passwords')
             ->with('tags')
             ->with('gears')

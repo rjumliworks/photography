@@ -32,7 +32,7 @@ class SaveClass
                 'mime_type' => $file->getMimeType(),
                 'size' => $file->getSize(),
                 'kind' => $kind,
-                'status' => 'completed', 
+                'status' => 'processing', 
                 'user_id' => \Auth::user()->id,
                 'folder_id' => $request->id,
             ]);
@@ -42,8 +42,8 @@ class SaveClass
 
         return [
             'data' => new FileResource($folderFile),
-            'message' => 'Folder tags created successfully!',
-            'info' => "Your new folder has been created and is now available."
+            'message' => 'File uploaded successfully!',
+            'info' => "Your file has been uploaded and is now available."
         ];
     }
 }
