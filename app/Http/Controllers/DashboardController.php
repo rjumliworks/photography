@@ -44,6 +44,9 @@ class DashboardController extends Controller
             case 'tags':
                 return $this->dropdown->tags($request->keyword);
             break;
+            case 'users':
+                return $this->dropdown->users($request->keyword);
+            break;
         }
     }
 }

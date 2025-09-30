@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use App\Models\Plan;
 use App\Models\ListTag;
 use App\Models\ListStudio;
@@ -79,6 +80,30 @@ class DropdownClass
             return [
                 'value' => $item->id,
                 'name' => $item->name
+            ];
+        });
+        return $data;
+    }
+
+    public function users($keyword){
+        $data =  User::with('profile')
+        ->when($keyword, function ($query, $keyword) {
+            $query->where(function ($q) use ($keyword) {
+                $q->whereHas('profile', function ($q) use ($keyword) {
+                    $q->whereRaw('concat(firstname, " ", lastname) LIKE ?', ['%' . $keyword . '%'])
+                      ->orWhereRaw('concat(lastname, " ", firstname) LIKE ?', ['%' . $keyword . '%']);
+                })
+                ->orWhere('email', 'LIKE', "%{$keyword}%");
+            });
+        })
+        ->where('role','!=','Administrator')
+        ->where('id','!=',\Auth::user()->id)
+        ->limit(5)->get()->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'name' => $item->profile->firstname.' '.$item->profile->lastname,
+                'email' => $item->email,
+                'avatar' => $item->profile->avatar
             ];
         });
         return $data;

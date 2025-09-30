@@ -43,14 +43,14 @@
                 </div>
             </div>
         </div>
-        <div class="card bg-white rounded-bottom shadow-none mb-0" style="height: calc(100vh - 555px); overflow: auto;">
+        <div class="card bg-white rounded-bottom shadow-none mb-0" style="height: calc(100vh - 573px); overflow: auto;">
             <hr class="text-muted"/>
                 <div class="d-flex mb-n2 ms-3 me-3">
                     <div class="flex-shrink-0 me-3">
                         <p class="mb-0 text-primary fs-12 fw-semibold">Who has access</p>
                     </div>
                     <div class="flex-grow-1 mt-n1">
-                        <i @click="openAccess()" class="ri-add-circle-fill float-end text-muted fs-20" style="cursor: pointer;"></i>
+                        <i @click="openAccess(folder.owner)" class="ri-add-circle-fill float-end text-muted fs-20" style="cursor: pointer;"></i>
                     </div>
                 </div>
             <hr class="text-muted mb-1"/>
@@ -126,8 +126,8 @@ export default {
         openTag(){
             (this.folder.tags.length > 0) ? this.$refs.tag.edit(this.folder.id) : this.$refs.tag.show(this.folder.id);
         },
-        openAccess(){
-            this.$refs.access.show(this.folder.id);
+        openAccess(owner){
+            this.$refs.access.show(this.folder.id,owner);
         }
     }
 }

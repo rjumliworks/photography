@@ -1,93 +1,76 @@
 <template>
-    <b-modal v-model="showModal" style="--vz-modal-width: 600px;" header-class="p-3 bg-light" title="New Folder" class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>
+    <b-modal v-model="showModal" style="--vz-modal-width: 600px;" header-class="p-3 bg-light" title="Access" class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>
         <form class="customform">
             <BRow class="g-3 p-2 mb-n4">
-                <BCol lg="12" class="mt-2">
-                    <InputLabel for="name" value="Name" :message="form.errors.name"/>
-                    <TextInput id="name" v-model="form.name" type="text" class="form-control" placeholder="Please enter name" @input="handleInput('name')" :light="true"/>
+                <BCol lg="12" class="mt-2 mb-3">
+                    <Search :id="id" @add="updateList"/>
                 </BCol>
-                <BCol lg="12" class="mt-0">
-                    <InputLabel for="name" value="Description" :message="form.errors.name"/>
-                    <Textarea id="name" v-model="form.description" rows="3" type="text" class="form-control" placeholder="Please enter description" @input="handleInput('description')" :light="true"/>
-                </BCol>
-                <BCol lg="12">
-                    <div class="d-flex align-items-center">
-                        <div class="form-check form-switch form-switch-success form-switch-md mb-0">
-                            <input type="checkbox" class="form-check-input" id="customSwitchsizemd" v-model="form.is_public">
-                        </div>
-                        <label class="form-check-label ms-2 mt-n1 mb-0" for="customSwitchsizemd">Make this folder public</label>
-                    </div>
+                <BCol lg="12" class="mb-4 mt-1" v-if="owner">
+                    <h5 class="fs-15 mb-3">People with Access</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item p-3">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 avatar-xs">
+                                    <span class="avatar-title bg-light p-1 rounded-circle">
+                                        <img :src="owner.avatar" alt="" class="avatar-xs rounded-circle">
+                                    </span>
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    <h6 class="mb-0 fs-12">{{owner.name}} <span v-if="$page.props.user.data.name == owner.name" class="text-muted fs-11">(you)</span></h6>
+                                    <p class="fs-11 mb-0 text-muted">{{ owner.email }}</p>
+                                </div>
+                                <div class="flex-shrink-0 text-end">
+                                    <h6 class="text-muted mt-2 me-2 fs-12">Owner</h6>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item p-3" v-if="share">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 avatar-xs">
+                                    <span class="avatar-title bg-light p-1 rounded-circle">
+                                        <img :src="'/storage/'+share.avatar" alt="" class="avatar-xs rounded-circle">
+                                    </span>
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    <h6 class="mb-0 fs-12">{{share.name}} <span v-if="$page.props.user.data.name == share.name" class="text-muted fs-11">(you)</span></h6>
+                                    <p class="fs-11 mb-0 text-muted">{{ share.email }}</p>
+                                </div>
+                                <div class="flex-shrink-0 text-end">
+                                    <h6 class="text-muted mt-2 me-2 fs-12">Viewer</h6>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
                 </BCol>
             </BRow>
         </form> 
         <template v-slot:footer>
-            <b-button @click="hide()" variant="light" block>Cancel</b-button>
-            <b-button @click="submit('ok')" variant="primary" :disabled="form.processing" block>Submit</b-button>
+            <b-button @click="hide()" variant="light" block>Close</b-button>
         </template>
     </b-modal>
 </template>
 <script>
 import _ from 'lodash';
-import { useForm } from '@inertiajs/vue3';
-import Multiselect from "@vueform/multiselect";
-import InputLabel from '@/Shared/Components/Forms/InputLabel.vue';
-import TextInput from '@/Shared/Components/Forms/TextInput.vue';
-import Textarea from '@/Shared/Components/Forms/Textarea.vue';
+import Search from './Search.vue';
 export default {
-    components: { Multiselect, InputLabel, TextInput, Textarea },
+    components: { Search },
     data(){
         return {
             currentUrl: window.location.origin,
-            form: useForm({
-                id: null,
-                name: null,
-                description: null,
-                is_public: false,
-                is_protected: false,
-                option: 'update'
-            }),
+            owner: null,
+            share: null,
+            id: null,
             showModal: false
         }
     },
     methods: { 
-        show(){
-            this.editable = false;
-            this.form.reset();
+        show(id,owner){
+            this.id = id;
+            this.owner = owner;
             this.showModal = true;
         },
-        edit(data){
-            this.form.id = data.id;
-            this.form.name = data.name;
-            this.form.description = data.description;
-            this.form.is_public = data.is_public;
-            this.editable = true;
-            this.showModal = true;
-        },
-        submit(){
-            if(this.editable){
-                this.form.put('/folders/update',{
-                    preserveScroll: true,
-                    onSuccess: (response) => {
-                        this.$emit('update',this.$page.props.flash.data.data);
-                        this.form.clearErrors();
-                        this.form.reset();
-                        this.hide();
-                    },
-                });
-            }else{
-                this.form.post('/folders',{
-                    preserveScroll: true,
-                    onSuccess: (response) => {
-                        this.$emit('success',true);
-                        this.form.clearErrors();
-                        this.form.reset();
-                        this.hide();
-                    },
-                });
-            }
-        },
-        handleInput(field) {
-            this.form.errors[field] = false;
+        updateList(data){
+            this.share = data;
         },
         hide(){
             this.showModal = false;
