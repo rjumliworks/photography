@@ -1,5 +1,5 @@
 <template>
-    <b-modal v-model="showModal" header-class="p-3 bg-light" title="Add User" class="v-modal-custom"
+    <b-modal v-model="showModal" header-class="p-3 bg-light" title="Share Folder" class="v-modal-custom"
         modal-class="zoomIn" centered no-close-on-backdrop>
         <form class="customform">
             <BRow class="g-3 p-0 mb-0 mt-0">
@@ -30,17 +30,22 @@
                                         </template>
                                         
                                         <b-dropdown-item
-                                            v-for="opt in permissionOptions"
+                                            v-for="opt in types"
                                             :key="opt.value"
                                             @click="form.type_id = opt.value"
                                         >
-                                            {{ opt.text }}
+                                            {{ opt.name }}
                                         </b-dropdown-item>
                                     </b-dropdown>
                                 </div>
                             </div>
                         </li>
                     </ul>
+                </BCol>
+                <BCol lg="12" class="mb-n3">
+                    <div class="alert alert-secondary alert-dismissible alert-label-icon label-arrow fade show material-shadow fs-11" role="alert">
+                        <i class="ri-question-fill label-icon"></i><strong>Confirm Share</strong> - Are you sure you want to share this folder?
+                    </div>
                 </BCol>
             </BRow>
         </form>
@@ -51,48 +56,39 @@
     </b-modal>
 </template>
 <script>
-    import {
-        useForm
-    } from '@inertiajs/vue3';
+import { useForm } from '@inertiajs/vue3';
     export default {
+        props: ['types'],
         data() {
             return {
                 currentUrl: window.location.origin,
                 form: useForm({
                     type_id: null,
                     user_id: null,
-                    folder_id: null,
+                    id: null,
                     option: 'share'
                 }),
-                permissionOptions: [{
-                        value: 'viewer',
-                        text: 'Viewer'
-                    },
-                    {
-                        value: 'commenter',
-                        text: 'Commenter'
-                    },
-                    {
-                        value: 'editor',
-                        text: 'Editor'
-                    }
-                ],
                 share: null,
                 showModal: false
             }
         },
         computed: {
             currentPermissionText() {
-                const found = this.permissionOptions.find(
-                    opt => opt.value === this.form.type_id
-                )
-                return found ? found.text : 'Viewer'
+                let found = this.types.find(opt => opt.value === this.form.type_id)
+                if (!found) {
+                    found = this.types.find(opt => opt.name === 'Viewer')
+                    if (found) {
+                        this.form.type_id = found.value
+                    }
+                }
+                return found ? found.name : 'Viewer'
             }
         },
         methods: {
-            show(share, id) {
+            show(share,id) {
                 this.form.reset();
-                this.form.folder_id = id;
+                this.form.id = id;
+                this.form.user_id = share.id;
                 this.share = share;
                 this.showModal = true;
             },

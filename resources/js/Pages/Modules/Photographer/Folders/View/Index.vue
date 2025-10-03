@@ -53,7 +53,7 @@
                     </BCard>
                 </BCol>
                 <BCol lg="3">
-                    <Sidebar :used="totalUsage" :percent="percentUsed" :plan="plan.data" :folder="folder_data.data" ref="sidebar"/>
+                    <Sidebar :used="totalUsage" :visibilities="visibilities" :types="types" :percent="percentUsed" :plan="plan.data" :folder="folder_data.data" ref="sidebar"/>
                 </BCol>
                 <BCol lg="9">
                     <Main :folder="folder_data.data" :plan="plan.data" @size="updateSize" ref="main"/>
@@ -67,7 +67,7 @@ import Main from './Components/Main.vue';
 import Sidebar from './Components/Sidebar.vue';
 export default {
     components: { Sidebar, Main },
-    props:['folder_data','used','plan'],
+    props:['folder_data','used','plan','types','visibilities'],
     data(){
         return {
             currentUrl: window.location.origin,

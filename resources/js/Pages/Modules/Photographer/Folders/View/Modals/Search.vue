@@ -19,14 +19,14 @@
             </SimpleBar>
         </div>
     </form>
-    <Add ref="add"/>
+    <Add :types="types" ref="add"/>
 </template>
 <script>
 import _ from 'lodash';
-import Add from './Add.vue';
+import Add from './Share.vue';
 export default {
     components: { Add },
-    props: ['id'],
+    props: ['id','types'],
     data(){
         return {
             currentUrl: window.location.origin,

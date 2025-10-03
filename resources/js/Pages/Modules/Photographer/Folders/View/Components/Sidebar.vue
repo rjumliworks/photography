@@ -32,7 +32,7 @@
             <hr class="text-muted"/>
                 <p class="ms-3 mb-0 text-primary fs-12 fw-semibold">Password Protected</p>
             <hr class="text-muted mb-1"/>
-            <div class="ps-3 pe-3 pt-2">
+            <div class="ps-3 pe-3 pt-2 mt-1">
                 <div v-if="folder.is_protected" class="alert alert-danger alert-dismissible alert-label-icon label-arrow fade show material-shadow fs-12" role="alert">
                     <i class="ri-lock-fill label-icon"></i>
                     This folder is password protected.
@@ -43,13 +43,13 @@
                 </div>
             </div>
         </div>
-        <div class="card bg-white rounded-bottom shadow-none mb-0" style="height: calc(100vh - 573px); overflow: auto;">
+        <div class="card bg-white rounded-bottom shadow-none mb-0" style="height: calc(100vh - 556px); overflow: auto;">
             <hr class="text-muted"/>
                 <div class="d-flex mb-n2 ms-3 me-3">
                     <div class="flex-shrink-0 me-3">
                         <p class="mb-0 text-primary fs-12 fw-semibold">Who has access</p>
                     </div>
-                    <div class="flex-grow-1 mt-n1">
+                    <div class="flex-grow-1 mt-n1" v-if="folder.owner.id == $page.props.user.data.id">
                         <i @click="openAccess(folder.owner)" class="ri-add-circle-fill float-end text-muted fs-20" style="cursor: pointer;"></i>
                     </div>
                 </div>
@@ -68,6 +68,22 @@
                         </div>
                         <div class="flex-shrink-0 text-end">
                             <h6 class="text-muted mt-2 me-2 fs-12">Owner</h6>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item px-0" v-for="(list,index) in folder.shares" v-bind:key="index">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0 avatar-xs">
+                            <span class="avatar-title bg-light p-1 rounded-circle">
+                                <img :src="'/storage/'+list.avatar" alt="" class="avatar-xs rounded-circle">
+                            </span>
+                        </div>
+                        <div class="flex-grow-1 ms-2">
+                            <h6 class="mb-0 fs-12">{{list.name}}</h6>
+                            <p class="fs-11 mb-0 text-muted">{{ list.email }}</p>
+                        </div>
+                        <div class="flex-shrink-0 text-end">
+                            <h6 class="text-muted mt-2 me-2 fs-12">{{ list.type.name }}</h6>
                         </div>
                     </div>
                 </li>
@@ -91,13 +107,13 @@
         </div>
     </div>
     <Tag :folder_tags="folder.tags" ref="tag"/>
-    <Access ref="access"/>
+    <Access :types="types" :type="folder.type" :visibilities="visibilities" :shares="folder.shares" ref="access"/>
 </template>
 <script>
 import Tag from '../Modals/Tag.vue';
 import Access from '../Modals/Access.vue';
 export default {
-    props:['folder','used','plan','percent'],
+    props:['folder','used','plan','percent','types','visibilities'],
     components: { Tag, Access },
     data(){
         return {

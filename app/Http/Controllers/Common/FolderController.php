@@ -67,6 +67,12 @@ class FolderController extends Controller
                 case 'tags':
                     return $this->update->tags($request);
                 break;
+                case 'share':
+                    return $this->update->share($request);
+                break;
+                case 'visibility':
+                    return $this->update->visibility($request);
+                break;
             }
         });
         
@@ -83,6 +89,8 @@ class FolderController extends Controller
             'folder_data' => $this->view->show($code),
             'used' => $this->view->used(),
             'plan' => $this->photographer->plan(),
+            'types' => $this->dropdown->names('Share'),
+            'visibilities' => $this->dropdown->dropdowns('Visibility')
         ]);
     }
 }

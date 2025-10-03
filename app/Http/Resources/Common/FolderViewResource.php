@@ -22,6 +22,8 @@ class FolderViewResource extends JsonResource
             'is_protected' => $this->is_protected,
             'count' => $this->count,
             'size' => $this->size,
+            'type' => $this->type,
+            'shares' => ShareResource::collection($this->shares),
             'owner' => new ProfileResource($this->user),
             'files' => FileResource::collection($this->files),
             'tags' => $this->tags,

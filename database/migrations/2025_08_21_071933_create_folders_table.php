@@ -16,8 +16,9 @@ return new class extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('description')->nullable();
-            $table->boolean('is_public')->default(false);
             $table->boolean('is_protected')->default(false);
+            $table->unsignedTinyInteger('type_id');
+            $table->foreign('type_id')->references('id')->on('list_dropdowns')->onDelete('cascade');
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->datetime('opened_at')->nullable();

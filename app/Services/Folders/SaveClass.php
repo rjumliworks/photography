@@ -13,7 +13,7 @@ class SaveClass
             'name'        => $request->name,
             'description' => $request->description,
             'is_protected'=> $request->is_protected,
-            'is_public'   => $request->is_public,
+            'type_id'   => 2,
             'user_id'     => \Auth::user()->id
         ]);
         

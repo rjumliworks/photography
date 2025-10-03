@@ -14,8 +14,13 @@ return new class extends Migration
         Schema::create('folder_shares', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
+            $table->datetime('start_at')->nullable();
+            $table->datetime('end_at')->nullable();
+            $table->boolean('is_limited');
             $table->unsignedSmallInteger('type_id');
             $table->foreign('type_id')->references('id')->on('list_names')->onDelete('cascade');
+            $table->unsignedTinyInteger('status_id')->default(15 );
+            $table->foreign('status_id')->references('id')->on('list_statuses')->onDelete('cascade');
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedInteger('folder_id');

@@ -5,12 +5,26 @@ namespace App\Services;
 use App\Models\User;
 use App\Models\Plan;
 use App\Models\ListTag;
+use App\Models\ListName;
 use App\Models\ListStudio;
 use App\Models\ListCountry;
 use App\Models\ListCurrency;
+use App\Models\ListDropdown;
 
 class DropdownClass
 {  
+
+    public function names($type){
+        $data = ListName::where('type',$type)
+        ->get()->map(function ($item) {
+            return [
+                'value' => $item->id,
+                'name' => $item->name
+            ];
+        });
+        return $data;
+    }
+
     public function countries(){
         $data = ListCountry::all()->map(function ($item) {
             return [
@@ -109,17 +123,17 @@ class DropdownClass
         return $data;
     }
 
-    // public function dropdowns($class,$type = null){
-    //     $data = ListDropdown::where('classification',$class)
-    //     ->when($type, function ($query) use ($type){
-    //         $query->where('type',$type);
-    //     })
-    //     ->get()->map(function ($item) {
-    //         return [
-    //             'value' => $item->id,
-    //             'name' => $item->name
-    //         ];
-    //     });
-    //     return $data;
-    // }
+    public function dropdowns($class,$type = null){
+        $data = ListDropdown::where('classification',$class)
+        ->when($type, function ($query) use ($type){
+            $query->where('type',$type);
+        })
+        ->get()->map(function ($item) {
+            return [
+                'value' => $item->id,
+                'name' => $item->name
+            ];
+        });
+        return $data;
+    }
 }

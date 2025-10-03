@@ -15,8 +15,8 @@ class Folder extends Model
     protected $fillable = [
         'name',
         'description',
-        'is_public',
         'is_protected',
+        'type_id',
         'user_id',
         'opened_at'
     ];
@@ -26,6 +26,16 @@ class Folder extends Model
     public function user()
     {
         return $this->belongsTo('App\Models\User', 'user_id', 'id');
+    }
+
+    public function type()
+    {
+        return $this->belongsTo('App\Models\ListDropdown', 'type_id', 'id');
+    }
+
+    public function shares()
+    {
+        return $this->hasMany('App\Models\FolderShare', 'folder_id');
     }
 
     public function files()

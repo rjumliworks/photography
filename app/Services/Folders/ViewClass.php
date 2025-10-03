@@ -35,6 +35,8 @@ class ViewClass
             ->with('passwords')
             ->with('tags')
             ->with('gears')
+            ->with('type')
+            ->with('shares.user.profile','shares.type','shares.status')
             ->with('user.profile')
             ->where('id',$id)->first()
         );

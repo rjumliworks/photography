@@ -32,4 +32,40 @@ class UpdateClass
             'info' => 'The folder’s tags have been refreshed with your latest selection.'
         ];
     }
+
+    public function share($request)
+    {
+        $data = Folder::find($request->id);
+        $share = $data->shares()->create([
+            'user_id'   => $request->user_id,
+            'type_id'   => $request->type_id,
+            'status_id' => $request->status_id ?? 15,
+            'is_limited'=> $request->is_limited ?? false,
+            'start_at'  => $request->start_at,
+            'end_at'    => $request->end_at,
+        ]);
+        if($share){
+            $data->type_id = 3;
+            $data->save();
+        }
+
+        return [
+            'data' => $share,
+            'message' => 'Folder shared successfully!',
+            'info' => 'The folder has been shared with the selected user.'
+        ];
+    }
+
+    public function visibility($request)
+    {
+        $data = Folder::find($request->id);
+        $data->type_id = $request->type_id;
+        $data->save();
+
+        return [
+            'data' => $data->toArray(),
+            'message' => 'Tags updated successfully!',
+            'info' => 'The folder’s tags have been refreshed with your latest selection.'
+        ];
+    }
 }
