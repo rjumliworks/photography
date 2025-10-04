@@ -65,7 +65,7 @@ class Folder extends Model
 
     public function getSizeAttribute()
     {
-        $bytes = $this->files()->sum('size');
+        $bytes = $this->files()->withTrashed()->sum('size');
 
         $units = ['B', 'KB', 'MB', 'GB', 'TB'];
         $i = $bytes > 0 ? floor(log($bytes, 1024)) : 0;
@@ -106,6 +106,11 @@ class Folder extends Model
     }
 
     public function getCreatedAtAttribute($value)
+    {
+        return date('F d, Y g:i a', strtotime($value));
+    }
+
+    public function getDeletedAtAttribute($value)
     {
         return date('F d, Y g:i a', strtotime($value));
     }

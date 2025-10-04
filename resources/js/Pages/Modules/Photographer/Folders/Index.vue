@@ -47,8 +47,18 @@
                         <div class="flex-grow-1">
                             <ul class="nav nav-tabs nav-tabs-custom nav-primary fs-12" role="tablist">
                                 <li class="nav-item">
-                                    <BLink @click="viewStatus(null,null)" class="nav-link py-3 active" data-bs-toggle="tab" role="tab" aria-selected="true">
+                                    <BLink @click="selectView('all')" class="nav-link py-3 active" data-bs-toggle="tab" role="tab" aria-selected="true">
                                     <i class="ri-apps-2-line me-1 align-bottom"></i> All Folder
+                                    </BLink>
+                                </li>
+                                <li class="nav-item">
+                                    <BLink @click="selectView('own')" class="nav-link py-3 " data-bs-toggle="tab" role="tab" aria-selected="true">
+                                    <i class="ri-folder-5-line me-1 align-bottom"></i> My Folder <span v-if="counts.own > 0" class="text-muted fs-11">({{ counts.own }})</span>
+                                    </BLink>
+                                </li>
+                                <li class="nav-item">
+                                    <BLink @click="selectView('shared')" class="nav-link py-3 " data-bs-toggle="tab" role="tab" aria-selected="true">
+                                    <i class="ri-folder-user-line me-1 align-bottom"></i> Shared Folder <span v-if="counts.shared > 0" class="text-muted fs-11">({{ counts.shared }})</span>
                                     </BLink>
                                 </li>
                                 <!-- <li class="nav-item" v-for="(list,index) in counts" v-bind:key="index">
@@ -126,7 +136,7 @@
                                                     </li>
                                                     <li><hr class="dropdown-divider"></li>
                                                     <li>
-                                                        <a class="dropdown-item d-flex align-items-center text-danger" href="#removeFileItemModal" data-id="1" data-bs-toggle="modal" role="button">
+                                                        <a @click="openDelete(list,index)" class="dropdown-item d-flex align-items-center text-danger" href="#removeFileItemModal" data-id="1" data-bs-toggle="modal" role="button">
                                                             <i class="ri-delete-bin-6-fill me-2"></i> Move to trash
                                                         </a>
                                                     </li>
@@ -146,15 +156,18 @@
             </div>
         </div>
     </BRow>
+    <Delete ref="delete"/>
     <Create @success="fetch()" @update="updateRow" :currencies="currencies" ref="create"/>
 </template>
 <script>
 import _ from 'lodash';
 import Create from './Modals/Create.vue';
+import Delete from './Modals/Delete.vue';
 import PageHeader from '@/Shared/Components/PageHeader.vue';
 import Pagination from "@/Shared/Components/Pagination.vue";
 export default {
-    components: { PageHeader, Pagination, Create },
+    components: { PageHeader, Pagination, Create, Delete },
+    props:['counts'],
     data(){
         return {
             currentUrl: window.location.origin,
@@ -164,9 +177,22 @@ export default {
             filter: {
                 keyword: null
             },
+            type: null,
             index: null,
             selectedRow: null
         }
+    },
+    watch: {
+        "type"(newVal) {
+            if(newVal){
+                if(newVal != 'all'){
+                    this.type = newVal;
+                }else{
+                    this.type = null;
+                }
+                this.fetch();
+            }
+        },
     },
     created(){
         this.fetch();
@@ -180,9 +206,7 @@ export default {
             axios.get(page_url,{
                 params : {
                     keyword: this.filter.keyword,
-                    expense: this.filter.expense,
-                    status: this.filter.status,
-                    mode: this.filter.mode,
+                    type: this.type,
                     count: 10, 
                     option: 'lists'
                 }
@@ -202,6 +226,13 @@ export default {
         openUpdate(data,index){
             this.index = index;
             this.$refs.create.edit(data);
+        },
+        openDelete(list,index){
+            this.$refs.delete.show(list);
+            this.index = index;
+        },
+        selectView(data){
+            this.type = data;
         },
         selectRow(index) {
             this.selectedRow = index;

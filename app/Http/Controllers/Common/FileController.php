@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Common;
 
 use App\Http\Controllers\Controller;
 use App\Traits\HandlesTransaction;
+use App\Services\Files\ViewClass;
 use App\Services\Files\SaveClass;
 use App\Services\Files\UpdateClass;
 use Illuminate\Http\Request;
@@ -13,10 +14,11 @@ class FileController extends Controller
 {
     use HandlesTransaction;
 
-    public $save, $update;
+    public $save, $update, $view;
 
-    public function __construct(SaveClass $save, UpdateClass $update){
+    public function __construct(SaveClass $save, UpdateClass $update, ViewClass $view){
         $this->save = $save;
+        $this->view = $view;
         $this->update = $update;
     }
 
@@ -25,6 +27,8 @@ class FileController extends Controller
             case 'download':
                 return $this->update->download($request);
             break;
+            default:
+                return inertia('Modules/Photographer/Files/Index');
         }
     }
 
@@ -57,6 +61,9 @@ class FileController extends Controller
                 break;
                 case 'softdelete':
                     return $this->update->delete($request);
+                break;
+                case 'restore':
+                    return $this->update->restore($request);
                 break;
                 case 'like':
                     return $this->update->like($request);

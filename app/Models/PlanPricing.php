@@ -29,6 +29,11 @@ class PlanPricing extends Model
         return $this->belongsTo('App\Models\ListCurrency', 'currency_id', 'id');
     }
 
+    public function subscriptions()
+    {
+        return $this->hasMany('App\Models\Subscription', 'plan_id');
+    }
+
     public function updateIfDirty(array $attributes){
         $this->fill($attributes);
         $dirtyAttributes = $this->getDirty();

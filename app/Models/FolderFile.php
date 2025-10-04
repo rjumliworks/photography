@@ -94,4 +94,19 @@ class FolderFile extends Model
         ->logOnlyDirty()
         ->dontSubmitEmptyLogs();
     }
+
+    public function getSizeAttribute($value)
+    {
+        $bytes = $value ?? $this->attributes['size'];
+
+        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+        $i = $bytes > 0 ? floor(log($bytes, 1024)) : 0;
+
+        return round($bytes / pow(1024, $i), 2).' '.$units[$i];
+    }
+
+    public function getDeletedAtAttribute($value)
+    {
+        return date('F d, Y g:i a', strtotime($value));
+    }
 }

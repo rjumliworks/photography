@@ -27,15 +27,36 @@ class UpdateClass
         return Storage::disk('public')->download($file->path, $file->name);
     }
 
+    public function restore($request)
+    {
+        $file = FolderFile::withTrashed()->findOrFail($request->id);
+        $file->deleted_at = null;
+        $file->save(); 
+        
+        return [
+            'data' => $file->toArray(),
+            'message' => 'File restored successfully!',
+            'info' => "The file {$file->name} has been restored."
+        ];
+    }
+
     public function delete($request)
     {
-        $file = FolderFile::findOrFail($request->id);
-        $file->delete(); 
+        $file = FolderFile::withTrashed()->findOrFail($request->id);
+        if ($request->is_permanent) {
+            $file->forceDelete();         
+            $message = "File permanently deleted!";
+            $info = "The file is permanently deleted and cannot be restored.";
+        } else {
+            $file->delete();         
+            $message = 'File deleted successfully!';
+            $info =  "The file is no longer visible in your folders but can still be restored from Trash.";
+        }
 
         return [
-            'data' => new FileResource($file),
-            'message' => 'File deleted successfully!',
-            'info' => "The file is no longer visible in your folders but can still be restored from Trash."
+            'data' => $file,
+            'message' => $message,
+            'info' => $info
         ];
     }
 

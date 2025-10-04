@@ -33,7 +33,8 @@ class FolderController extends Controller
             break;
             default:
                 return inertia('Modules/Photographer/Folders/Index',[
-                    'currencies' => $this->dropdown->currencies()
+                    'currencies' => $this->dropdown->currencies(),
+                    'counts' => $this->view->counts()
                 ]);
         }
     }
@@ -72,6 +73,9 @@ class FolderController extends Controller
                 break;
                 case 'visibility':
                     return $this->update->visibility($request);
+                break;
+                case 'softdelete':
+                    return $this->update->delete($request);
                 break;
             }
         });

@@ -90,7 +90,7 @@
                                 </ul>
                             </div>
                             <h5 class="mb-0 mt-n2 fs-12 text-truncate text-primary">{{ list.name }}</h5>
-                            <p class="text-muted fs-10 mb-n2">{{ formatSize(list.size) }}</p>
+                            <p class="text-muted fs-10 mb-n2">{{ list.size }}</p>
                         </div>
                          <div class="card-footer border-top border-top-dashed mb-n2 fs-12" style="cursor: pointer;" @click="openView(list)">
                             <p class="fw-medium mb-0 mt-n1 float-end"><i class="ri-message-3-fill text-primary align-middle"></i>  {{ list.comments.length }} </p>

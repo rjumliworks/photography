@@ -20,8 +20,34 @@ class ViewClass
         $this->user = \Auth::user()->id;
     }
 
+    public function counts(){
+        return [
+            'own' => Folder::where('user_id', \Auth::id())->count(),
+            'shared' => Folder::whereHas('shares', function ($q) {
+                $q->where('user_id', \Auth::id());
+            })->count()
+        ];
+    }
+
     public function lists($request){
-        $data = Folder::paginate(10);
+        $data = Folder::
+        when($request->type, function ($query, $type) {
+            if ($type == 'shared') {
+                $query->whereHas('shares', function ($q) {
+                    $q->where('user_id', \Auth::id());
+                });
+            } else if ($type == 'own') {
+                $query->where('user_id', \Auth::id());
+            }
+        }, function ($query) {
+            $query->where(function ($q) {
+                $q->where('user_id', \Auth::id())
+                ->orWhereHas('shares', function ($q2) {
+                    $q2->where('user_id', \Auth::id());
+                });
+            });
+        })
+        ->paginate(10);
         return FolderResource::collection($data);
     }
 

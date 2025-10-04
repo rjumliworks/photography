@@ -68,4 +68,27 @@ class UpdateClass
             'info' => 'The folder’s tags have been refreshed with your latest selection.'
         ];
     }
+
+    public function delete($request)
+    {
+        $folder = Folder::with('files')->withTrashed()->findOrFail($request->id);
+
+        if ($request->is_permanent) {
+            $folder->files()->forceDelete();
+            $folder->forceDelete();         
+            $message = "Folder permanently deleted!";
+            $info = "The folder and its files are permanently deleted and cannot be restored.";
+        } else {
+            $folder->files()->delete(); 
+            $folder->delete();         
+            $message = "Folder deleted successfully!";
+            $info = "The folder and its files are no longer visible but can still be restored from Trash.";
+        }
+
+        return [
+            'data' => $folder,
+            'message' => $message,
+            'info' => $info
+        ];
+    }
 }
