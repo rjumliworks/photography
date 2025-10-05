@@ -42,13 +42,16 @@
                     <div class="card explore-box card-animate">
                         <a class="glightbox" :href="'/storage/' + list.path">
                             <div class="explore-place-bid-img overflow-hidden rounded"> 
-                                <img :src="'/storage/'+ list.meta.thumbnails['250x250']" alt="" class="card-img-top explore-img">
+                                <img :src="list.meta?.thumbnails?.['250x250'] 
+                                ? '/storage/' + list.meta.thumbnails['250x250'] 
+                                : '/images/avatars/avatar.jpg'"  alt="" 
+                                class="card-img-top explore-img">
                                 <div class="bg-overlay"></div>
                             </div>
                         </a>
                         <div class="bookmark-icon position-absolute top-0 end-0 p-2"> 
                             <BButton variant="link" class="btn-icon" @click="toggleLike(list)" 
-                            :class="list.likes.some(like => like.user_id === $page.props.user.data.id) ? 'active' : ''" 
+                            :class="(list.likes || []).some(like => like.user_id === $page.props.user.data.id) ? 'active' : ''"
                             data-bs-toggle="button" aria-pressed="true">
                                 <i class="mdi mdi-cards-heart fs-16"></i>
                             </BButton>
@@ -93,8 +96,8 @@
                             <p class="text-muted fs-10 mb-n2">{{ list.size }}</p>
                         </div>
                          <div class="card-footer border-top border-top-dashed mb-n2 fs-12" style="cursor: pointer;" @click="openView(list)">
-                            <p class="fw-medium mb-0 mt-n1 float-end"><i class="ri-message-3-fill text-primary align-middle"></i>  {{ list.comments.length }} </p>
-                            <p class="fw-medium mb-0 mt-n1"><i class="mdi mdi-heart text-danger align-middle"></i> {{ list.likes.length }} </p>
+                            <p class="fw-medium mb-0 mt-n1 float-end"><i class="ri-message-3-fill text-primary align-middle"></i>   {{ (list.comments || []).length }} </p>
+                            <p class="fw-medium mb-0 mt-n1"><i class="mdi mdi-heart text-danger align-middle"></i> {{ (list.likes || []).length }} </p>
                         </div>
                     </div>
                 </div>
@@ -161,32 +164,22 @@ export default {
             this.$refs.view.show(list);
         },
         toggleLike(item) {
-            
-            const alreadyLiked = item.likes.find(like => like.user_id === this.$page.props.user.data.id);
+    if (!item.likes) item.likes = []; // ensure it's always an array
 
-            if (alreadyLiked) {
-                item.likes = item.likes.filter(like => like.user_id !== this.$page.props.user.data.id);
-                this.form.option = 'unlike';
-                this.form.id = alreadyLiked.id;
-                this.form.put('/files/update', {
-                    preserveScroll: true,
-                    onSuccess: (response) => {
-                        // this.selected.comments.unshift(this.$page.props.flash.data)
-                        // this.form.comment = null;
-                    },
-                });
-            } else {
-                this.form.id = item.id;
-                this.form.option = 'like';
-                this.form.put('/files/update', {
-                    preserveScroll: true,
-                    onSuccess: (response) => {
-                        // this.selected.comments.unshift(this.$page.props.flash.data)
-                        // this.form.comment = null;
-                    },
-                });
-            }
-        },
+    const alreadyLiked = item.likes.find(like => like.user_id === this.$page.props.user.data.id);
+
+    if (alreadyLiked) {
+        item.likes = item.likes.filter(like => like.user_id !== this.$page.props.user.data.id);
+        this.form.option = 'unlike';
+        this.form.id = alreadyLiked.id;
+        this.form.put('/files/update', { preserveScroll: true });
+    } else {
+        this.form.id = item.id;
+        this.form.option = 'like';
+        this.form.put('/files/update', { preserveScroll: true });
+        item.likes.push({ user_id: this.$page.props.user.data.id }); // optimistic update
+    }
+},
         handleFileChange(e) {
             const selectedFiles = Array.from(e.target.files);
 
