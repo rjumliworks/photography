@@ -43,9 +43,9 @@ class Folder extends Model
         return $this->hasMany('App\Models\FolderFile', 'folder_id')->orderBy('updated_at','DESC');
     }
 
-    public function passwords()
+    public function password()
     {
-        return $this->hasMany('App\Models\FolderPassword', 'folder_id');
+        return $this->hasOne('App\Models\FolderPassword', 'folder_id');
     }
 
     public function tags()

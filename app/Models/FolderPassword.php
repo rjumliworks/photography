@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
@@ -18,9 +19,14 @@ class FolderPassword extends Model
         'expires_at'
     ];
 
-    protected $hidden = [
-        'password'
-    ];
+    public function getPasswordAttribute($value)
+    {
+        try {
+            return Crypt::decryptString($value);
+        } catch (\Exception $e) {
+            return null; // in case decryption fails
+        }
+    }
 
     public function folder()
     {

@@ -11,6 +11,7 @@ use App\Services\Dashboard\PhotographerClass;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\FolderRequest;
+use App\Http\Requests\FolderUpdateRequest;
 
 class FolderController extends Controller
 {
@@ -59,7 +60,7 @@ class FolderController extends Controller
         ]);
     }
 
-    public function update(Request $request){
+    public function update(FolderUpdateRequest $request){
         $result = $this->handleTransaction(function () use ($request) {
             switch($request->option){
                 case 'folder':
@@ -70,6 +71,9 @@ class FolderController extends Controller
                 break;
                 case 'share':
                     return $this->update->share($request);
+                break;
+                case 'password':
+                    return $this->update->password($request);
                 break;
                 case 'visibility':
                     return $this->update->visibility($request);
@@ -91,6 +95,7 @@ class FolderController extends Controller
     public function show($code){
         return inertia('Modules/Photographer/Folders/View/Index',[
             'folder_data' => $this->view->show($code),
+            'files' => $this->view->files($code),
             'used' => $this->view->used(),
             'plan' => $this->photographer->plan(),
             'types' => $this->dropdown->names('Share'),

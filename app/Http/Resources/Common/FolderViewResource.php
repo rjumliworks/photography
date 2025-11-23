@@ -20,6 +20,7 @@ class FolderViewResource extends JsonResource
             'description' => $this->description,
             'is_public' => $this->public,
             'is_protected' => $this->is_protected,
+            'password' => $this->password,
             'count' => $this->count,
             'size' => $this->size,
             'type' => $this->type,

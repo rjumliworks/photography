@@ -5,12 +5,12 @@
                 <div class="flex-shrink-0 me-3">
                     <div style="height:2.5rem;width:2.5rem;">
                         <span class="avatar-title bg-primary-subtle rounded p-2 mt-n1">
-                            <i :class="plan.data.plan.icon" class="text-primary fs-24"></i>
+                            <i :class="[plan.data.plan.icon, 'fs-24', plan.data.status.name === 'Expired' ? 'text-danger' : 'text-primary']"></i>
                         </span>
                     </div>
                 </div>
                 <div class="flex-grow-1">
-                    <h5 class="mb-0 fs-14"><span class="text-body">{{ plan.data.plan.name }}</span></h5>
+                    <h5 class="mb-0 fs-14"><span :class="[plan.data.status.name === 'Expired' ? 'text-danger' : '']">{{ plan.data.plan.name }}</span></h5>
                     <p class="text-muted text-truncate-two-lines fs-12">
                         <span v-if="timeLeft.total > 0">
                             {{ timeLeft.days }}d {{ timeLeft.hours }}h {{ timeLeft.minutes }}m {{ timeLeft.seconds }}s remaining
@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="card-body border-bottom bg-white">
-            <p class="mb-0 text-primary fs-12 fw-semibold">Storage Status</p>
+            <p class="mb-0 text-primary fs-12 fw-semibold">Storage Status : </p>
         </div>
         <div class="card bg-white border-bottom shadow-none mb-0" style="height: calc(100vh - 300px); overflow-x: hidden;">
             <div class="p-4 mb-n4">

@@ -24,6 +24,11 @@ class Subscription extends Model
         return $this->hasMany('App\Models\SubscriptionHistory', 'subscription_id');
     }
 
+    public function status()
+    {
+        return $this->belongsTo('App\Models\ListStatus', 'status_id', 'id');
+    }
+
     public function plan()
     {
         return $this->belongsTo('App\Models\PlanPricing', 'plan_id', 'id');

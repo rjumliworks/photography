@@ -3,6 +3,8 @@
 namespace App\Services\Folders;
 
 use App\Models\Folder;
+use App\Models\FolderPassword;
+use Illuminate\Support\Facades\Crypt;
 use App\Http\Resources\Common\FolderResource;
 
 class UpdateClass
@@ -89,6 +91,28 @@ class UpdateClass
             'data' => $folder,
             'message' => $message,
             'info' => $info
+        ];
+    }
+
+    public function password($request){
+         $request->validate([
+            'id' => 'required|exists:folders,id',
+            'password' => 'required|string|min:6|confirmed', // 'confirmed' requires confirm_password
+        ]);
+        
+        $data = new FolderPassword;
+        $data->password = Crypt::encryptString($request->password);
+        $data->folder_id = $request->id; 
+        $data->user_id = \Auth::user()->id; 
+        $data->expires_at = now(); 
+        if($data->save()){
+            $folder = Folder::where('id',$request->id)->update(['is_protected' => 1]);
+        }
+
+        return [
+            'data' => $data->toArray(),
+            'message' => 'Folder password has been successfully updated!',
+            'info' => 'The folder is now protected with your new password.'
         ];
     }
 }

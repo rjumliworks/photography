@@ -1,5 +1,5 @@
 <template>
-    <Head title="Employee Profile" />
+    <Head :title="folder.name" />
     <div class="chat-wrapper d-lg-flex gap-1 mx-n4 mt-n4 p-1">
         <div class="w-100 p-4 pb-0" ref="box">
             <BRow>
@@ -28,8 +28,9 @@
                                                         <div><span class="text-muted">Files :</span> <span class="fw-medium">{{folder_data.data.count}}</span></div>
                                                         <div class="vr" style="width: 1px;"></div>
                                                         <div><span class="text-muted">Type : </span> 
-                                                            <span v-if="folder.is_public" class="fw-medium">Public Folder</span>
-                                                            <span v-else class="fw-medium">Private Folder</span>
+                                                            {{ folder.type.name }}
+                                                            <!-- <span v-if="folder.is_public" class="fw-medium">Public Folder</span>
+                                                            <span v-else class="fw-medium">Private Folder</span> -->
                                                         </div>
                                                         <div class="vr" style="width: 1px;"></div>
                                                         <div><span class="text-muted">Date Created :</span> <span class="fw-medium">{{folder.created_at}}</span></div>

@@ -38,7 +38,7 @@ class UploaderJob implements ShouldQueue
                 ];
 
                 $thumb50Path  = $this->makeThumbnail($fullPath, 50, 50, 'thumb_50x50');
-                $thumb250Path = $this->makeThumbnail($fullPath, 500, 500, 'thumb_250x250');
+                $thumb250Path = $this->makeThumbnail($fullPath, 250, 250, 'thumb_250x250');
 
                 $meta['thumbnails'] = [
                     '50x50'   => str_replace(storage_path("app/public/"), '', $thumb50Path),

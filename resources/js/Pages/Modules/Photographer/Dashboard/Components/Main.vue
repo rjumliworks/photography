@@ -28,9 +28,12 @@
                 </div>
                 <div class="flex-grow-1"></div>
                 <div class="flex-shrink-0">
-                    <button @click="openCreate()" class="btn btn-sm btn-primary float-end" 
-                        :disabled="folders.length >= plan.data.plan.folders_limit"
+                    <button v-if="plan.data.status.name != 'Expired'" @click="openCreate()"
+                        class="btn btn-sm btn-primary float-end" :disabled="folders.length >= plan.data.plan.folders_limit"
                         style="margin-top: -5px; margin-bottom: -5px;">
+                        <i class="ri-add-circle-fill align-bottom"></i> New Folder
+                    </button>
+                    <button v-else class="btn btn-sm btn-primary float-end" disabled style="margin-top: -5px; margin-bottom: -5px;">
                         <i class="ri-add-circle-fill align-bottom"></i> New Folder
                     </button>
                 </div>
@@ -38,7 +41,7 @@
         </div>
 
         <!-- Folder list card -->
-        <div class="card bg-white shadow-none mb-n4 d-flex" :style="(folders.length > 0) ? 'min-height: 200px;' : 'min-height: 284px;'">
+        <div class="card bg-white shadow-none mb-n4 d-flex" :style="(folders.length > 0) ? 'min-height: 200px;' : 'min-height: 223px;'">
 
             <div class="p-4 mb-n3 flex-grow-1 d-flex flex-column">
                 <!-- Alert -->
@@ -118,7 +121,7 @@
 
         <!-- Recent uploads -->
         <div class="card bg-white border-bottom shadow-none mb-0" 
-             style="height: calc(100vh - 559px); overflow: hidden;">
+             style="height: calc(100vh - 499px); overflow: hidden;">
             <hr class="text-muted"/>
             <div class="d-flex mb-0 ms-3 me-3">
                 <div class="flex-shrink-0 me-3">

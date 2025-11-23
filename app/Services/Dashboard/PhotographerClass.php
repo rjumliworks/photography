@@ -21,7 +21,7 @@ class PhotographerClass
     }
 
     public function plan(){
-        return new SubscriptionResource(Subscription::with('plan.plan')->where('user_id',$this->user)->first());
+        return new SubscriptionResource(Subscription::with('plan.plan','status')->where('user_id',$this->user)->first());
     }
 
     public function folders(){

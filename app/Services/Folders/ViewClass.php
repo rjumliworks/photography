@@ -54,19 +54,30 @@ class ViewClass
     public function show($code){
         $hashids = new Hashids('krad',10);
         $id = $hashids->decode($code);
-
-        $data = new FolderViewResource(
-            Folder::query()
+        $folder = Folder::query()
             ->with('files.user.profile','files.comments.user.profile','files.likes.user.profile')
-            ->with('passwords')
+            ->with('password')
             ->with('tags')
             ->with('gears')
             ->with('type')
             ->with('shares.user.profile','shares.type','shares.status')
             ->with('user.profile')
-            ->where('id',$id)->first()
-        );
-        return $data;
+            ->where('id',$id)->first();
+        $folder->opened_at = now();
+        $folder->save();
+
+        return new FolderViewResource($folder);
+    }
+
+    public function files($code){
+        $hashids = new Hashids('krad',10);
+        $id = $hashids->decode($code);
+        $files = File::where('folder_id', $id)
+        ->with(['user.profile','comments.user.profile','likes.user.profile'])
+        ->latest()
+        ->paginate(20);
+
+        return $files;
     }
 
     public function used(){

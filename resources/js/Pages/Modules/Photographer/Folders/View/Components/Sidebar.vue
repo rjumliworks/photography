@@ -27,10 +27,19 @@
         </div>
         <div class="card bg-white shadow-none mb-0" style="height: 160px; overflow: hidden;">
             <div class="d-flex flex-wrap gap-2 p-3 mb-n3">
-                <span class="badge bg-secondary" v-for="(list,index) in folder.tags" v-bind:key="index">{{ list.name }}</span>
+                <span v-if="folder.tags.length > 0" class="badge bg-secondary" v-for="(list,index) in folder.tags" v-bind:key="index">{{ list.name }}</span>
+                <span v-else class="badge bg-light text-dark">Add Tag now</span>
             </div>
             <hr class="text-muted"/>
-                <p class="ms-3 mb-0 text-primary fs-12 fw-semibold">Password Protected</p>
+                <div class="d-flex mb-n2 ms-3 me-3">
+                    <div class="flex-shrink-0 me-3">
+                        <p class="mb-0 text-primary fs-12 fw-semibold">Password Protected</p>
+                    </div>
+                    <div class="flex-grow-1 mt-n1" v-if="folder.owner.id == $page.props.user.data.id">
+                        <i v-if="folder.is_protected" @click="viewPassword(folder.password)" class="ri-eye-fill float-end text-muted fs-20" style="cursor: pointer;"></i>
+                        <i v-else @click="openPassword(folder.owner)" class="ri-add-circle-fill float-end text-muted fs-20" style="cursor: pointer;"></i>
+                    </div>
+                </div>
             <hr class="text-muted mb-1"/>
             <div class="ps-3 pe-3 pt-2 mt-1">
                 <div v-if="folder.is_protected" class="alert alert-danger alert-dismissible alert-label-icon label-arrow fade show material-shadow fs-12" role="alert">
@@ -107,14 +116,18 @@
         </div>
     </div>
     <Tag :folder_tags="folder.tags" ref="tag"/>
+    <Password ref="password"/>
+    <ViewPassword ref="view"/>
     <Access :types="types" :type="folder.type" :visibilities="visibilities" :shares="folder.shares" ref="access"/>
 </template>
 <script>
 import Tag from '../Modals/Tag.vue';
 import Access from '../Modals/Access.vue';
+import Password from '../Modals/Password.vue';
+import ViewPassword from '../Modals/ViewPassword.vue';
 export default {
     props:['folder','used','plan','percent','types','visibilities'],
-    components: { Tag, Access },
+    components: { Tag, Access, Password, ViewPassword },
     data(){
         return {
             currentUrl: window.location.origin,
@@ -144,6 +157,13 @@ export default {
         },
         openAccess(owner){
             this.$refs.access.show(this.folder.id,owner);
+        },
+        openPassword(){
+            this.$refs.password.show(this.folder.id);
+        },
+        viewPassword(data){
+            console.log(data);
+            this.$refs.view.show(data);
         }
     }
 }
