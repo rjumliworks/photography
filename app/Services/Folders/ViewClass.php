@@ -72,7 +72,7 @@ class ViewClass
     public function files($code){
         $hashids = new Hashids('krad',10);
         $id = $hashids->decode($code);
-        $files = File::where('folder_id', $id)
+        $files = FolderFile::where('folder_id', $id)
         ->with(['user.profile','comments.user.profile','likes.user.profile'])
         ->latest()
         ->paginate(20);
