@@ -57,6 +57,18 @@
                                             <BButton variant="success" class="w-100" type="submit" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Sign In</BButton>
                                         </div>
 
+                                        <div class="mt-4">
+    <BButton
+        variant="outline-danger"
+        class="w-100 d-flex align-items-center justify-content-center gap-2"
+        type="button"
+        @click="loginWithGoogle"
+    >
+        <i class="ri-google-fill fs-16"></i>
+        Sign in with Google
+    </BButton>
+</div>
+
                                         <div class="mt-5 text-center">
                                             <p class="mb-0">Forgot your password? 
                                                 <Link href="/forgot-password" class="fw-semibold text-primary text-decoration-underline"> Click here</Link>
@@ -109,6 +121,9 @@ export default {
     methods: {
         openRegister(){
             this.$refs.register.show();
+        },
+        loginWithGoogle() {
+            window.location.href = '/auth/google';
         }
     }
 }
