@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\UserProfile;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
@@ -35,23 +36,46 @@ class SocialAuthController extends Controller
                 $user->update([
                     'provider'    => $provider,
                     'provider_id' => $socialUser->getId(),
-                    'avatar'      => $socialUser->getAvatar(),
+                    // 'avatar'      => $socialUser->getAvatar(),
                 ]);
             } else {
                 // Create new user
                 $user = User::create([
                     'name'        => $socialUser->getName() ?? $socialUser->getNickname(),
+                    'username'    => $socialUser->getEmail(),
                     'email'       => $socialUser->getEmail(),
                     'password'    => bcrypt(Str::random(16)),
                     'provider'    => $provider,
                     'provider_id' => $socialUser->getId(),
-                    'avatar'      => $socialUser->getAvatar(),
+                    'role'      => 'Photographer',
+                    'email_verified_at' => now()
                 ]);
+                $fullName = $socialUser->getName() ?? $socialUser->getNickname() ?? '';
+                $name = $this->splitFirstLast($fullName);
+                if($user){
+                    UserProfile::create([
+                        'firstname' => $name['first_name'],
+                        'lastname'  => $name['last_name'],
+                    ]);
+                }
             }
         }
 
         Auth::login($user, true);
 
         return redirect()->intended('/dashboard');
+    }
+
+    private function splitFirstLast(string $fullName): array
+    {
+        $parts = preg_split('/\s+/', trim($fullName));
+
+        $firstName = $parts[0] ?? null;
+        $lastName  = count($parts) > 1 ? end($parts) : null;
+
+        return [
+            'first_name' => $firstName,
+            'last_name'  => $lastName,
+        ];
     }
 }
