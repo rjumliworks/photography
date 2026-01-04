@@ -35,6 +35,24 @@
                     <span class="fw-semibold fs-14" data-key="t-dashboards">Trash</span>
                     </Link>
                 </li>
+                <li class="menu-title">
+                    <i class="ri-more-fill" aria-expanded="false"></i>
+                    <span data-key="t-menu">Billing</span>
+                </li>
+                <li class="nav-item">
+                    <Link href="/subscriptions" class="nav-link menu-link"
+                    :class="{'active': $page.component.startsWith('Modules/Photographer/Subscription') }">
+                    <i class="ri-price-tag-3-fill"></i>
+                    <span class="fw-semibold fs-14" data-key="t-dashboards">Subscriptions</span>
+                    </Link>
+                </li>
+                <li class="nav-item">
+                    <Link href="/payments" class="nav-link menu-link"
+                    :class="{'active': $page.component.startsWith('Modules/Photographer/Payment') }">
+                    <i class="ri-bank-card-fill"></i>
+                    <span class="fw-semibold fs-14" data-key="t-dashboards">Payments</span>
+                    </Link>
+                </li>
             </template>
             <template v-if="$page.props.user.data.role == 'Administrator'">
                 <li class="menu-title">

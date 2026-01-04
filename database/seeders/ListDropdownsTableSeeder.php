@@ -25,6 +25,7 @@ class ListDropdownsTableSeeder extends Seeder
                 'classification' => 'n/a',
                 'type' => 'n/a',
                 'color' => 'n/a',
+                'icon' => 'n/a',
                 'others' => 'n/a',
                 'is_active' => 1,
             ),
@@ -35,7 +36,8 @@ class ListDropdownsTableSeeder extends Seeder
                 'classification' => 'Visibility',
                 'type' => 'Private',
                 'color' => 'text-danger',
-                'others' => 'bg-danger',
+                'icon' => 'ri-lock-fill',
+                'others' => 'Only the owner can see/access the folder.',
                 'is_active' => 1,
             ),
             2 => 
@@ -45,7 +47,8 @@ class ListDropdownsTableSeeder extends Seeder
                 'classification' => 'Visibility',
                 'type' => 'Specific People / Groups',
                 'color' => 'text-info',
-                'others' => 'bg-info',
+                'icon' => 'ri-folder-user-fill',
+            'others' => 'Visible to invited users, with permissions (view/comment/edit).',
                 'is_active' => 1,
             ),
             3 => 
@@ -55,7 +58,8 @@ class ListDropdownsTableSeeder extends Seeder
                 'classification' => 'Visibility',
                 'type' => 'Anyone with Link',
                 'color' => 'text-primary',
-                'others' => 'bg-primary',
+                'icon' => 'ri-earth-fill',
+            'others' => 'Anyone with the link can access, no login required (read-only or editable).',
                 'is_active' => 1,
             ),
         ));

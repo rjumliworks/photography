@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\User;
+use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use App\Http\Resources\UserResource;
@@ -21,6 +22,7 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'user' => (\Auth::check()) ? new UserResource(User::with('profile')->where('id',\Auth::user()->id)->first()) : '',
+            'subscription' => (\Auth::check()) ? new UserResource(User::with('profile')->where('id',\Auth::user()->id)->first()) : '',
             'flash' => [
                 'data' => session('data'),
                 'message' => session('message'),

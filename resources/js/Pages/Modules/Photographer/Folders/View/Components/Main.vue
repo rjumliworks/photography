@@ -52,27 +52,26 @@
             </div>
         </div>
         <div class="card bg-white rounded-bottom  shadow-none" >
-            
             <div class="d-flex">
                 <div class="flex-grow-1">
                     <ul class="nav nav-tabs nav-tabs-custom nav-primary fs-12" style="margin-top: 2px;" role="tablist">
                         <li class="nav-item">
-                            <BLink  class="nav-link py-3" data-bs-toggle="tab" role="tab" aria-selected="false">
+                            <BLink @click="show('null')" class="nav-link py-3" data-bs-toggle="tab" role="tab" aria-selected="false">
                                  <i class="ri-heart-fill me-1 align-bottom"></i> All Images & Videos
                             </BLink>
                         </li>
                          <li class="nav-item">
-                            <BLink  class="nav-link py-3" data-bs-toggle="tab" role="tab" aria-selected="false">
+                            <BLink @click="show('image')" class="nav-link py-3" data-bs-toggle="tab" role="tab" aria-selected="false">
                                  <i class="ri-image-fill me-1 align-bottom"></i> Images
                             </BLink>
                         </li>
                          <li class="nav-item">
-                            <BLink  class="nav-link py-3" data-bs-toggle="tab" role="tab" aria-selected="false">
+                            <BLink @click="show('video')" class="nav-link py-3" data-bs-toggle="tab" role="tab" aria-selected="false">
                                  <i class="ri-movie-fill me-1 align-bottom"></i> Videos
                             </BLink>
                         </li>
                         <li class="nav-item">
-                            <BLink  class="nav-link py-3" data-bs-toggle="tab" role="tab" aria-selected="false">
+                            <BLink @click="show('liked')" class="nav-link py-3" data-bs-toggle="tab" role="tab" aria-selected="false">
                                  <i class="ri-heart-fill me-1 align-bottom"></i> Favorites
                             </BLink>
                         </li>
@@ -85,7 +84,7 @@
         </div>
         <div class="card bg-light-subtle rounded-bottom shadow-none mb-0" style="height: calc(100vh - 420px); overflow-x: hidden;">
             <div class="row row-cols-xxl-5 row-cols-xl-4 row-cols-lg-3 row-cols-md-2 row-cols-1 p-3 mt-2">
-                <div class="col list-element" v-for="(list,index) in folder.files" v-bind:key="index">
+                <div class="col list-element" v-for="(list,index) in filteredFiles" v-bind:key="index">
                     <div class="card explore-box card-animate">
                         <a class="glightbox" :href="'/storage/' + list.path">
                             <div class="explore-place-bid-img overflow-hidden rounded"> 
@@ -178,6 +177,7 @@ export default {
                 limit: this.plan.plan.storage_limit,
                 option: null
             }),
+            filterKind: null,
             index: null
         }
     },
@@ -189,7 +189,27 @@ export default {
             zoomable: true,
         });
     },
+    computed: {
+        filteredFiles() {
+            if (!this.filterKind) {
+                return this.folder.files; // All Images & Videos
+            }
+
+            if (this.filterKind === 'liked') {
+                return this.folder.files.filter(file =>
+                    (file.likes || []).some(
+                        like => like.user_id === this.$page.props.user.data.id
+                    )
+                );
+            }
+
+            return this.folder.files.filter(file => file.kind === this.filterKind);
+        }
+    },
     methods: { 
+        show(kind) {
+            this.filterKind = kind === 'null' ? null : kind;
+        },
         triggerFileInput() {
             this.$refs.fileInput.click();
         },

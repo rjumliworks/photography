@@ -15,7 +15,7 @@ class PlanPricingsTableSeeder extends Seeder
     {
         
 
-        \DB::table('plan_pricings')->truncate();
+        \DB::table('plan_pricings')->delete();
         
         \DB::table('plan_pricings')->insert(array (
             0 => 

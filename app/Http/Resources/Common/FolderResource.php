@@ -22,6 +22,7 @@ class FolderResource extends JsonResource
             'is_protected' => $this->is_protected,
             'count' => $this->count,
             'size' => $this->size,
+            'type' => $this->type,
             'user_id' => $this->user_id,
             'opened_at' => $this->opened_at,
             'deleted_at' => $this->deleted_at,

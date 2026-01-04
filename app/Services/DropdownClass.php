@@ -131,7 +131,11 @@ class DropdownClass
         ->get()->map(function ($item) {
             return [
                 'value' => $item->id,
-                'name' => $item->name
+                'name' => $item->name,
+                'others' => $item->others,
+                'type' => $item->type,
+                'color' => $item->color,
+                'icon' => $item->icon
             ];
         });
         return $data;

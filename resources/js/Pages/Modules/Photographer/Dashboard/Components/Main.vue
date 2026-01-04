@@ -139,7 +139,7 @@
                             <th>Name</th>
                             <th style="width: 10%;" class="text-center">File Size</th>
                             <th style="width: 15%;" class="text-center">Folder</th>
-                            <th style="width: 18%;" class="text-center">Created Date</th>
+                            <th style="width: 18%;" class="text-center">Date Created</th>
                             <th style="width: 5%;"></th>
                         </tr>
                     </thead>

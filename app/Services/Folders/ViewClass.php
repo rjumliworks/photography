@@ -30,8 +30,8 @@ class ViewClass
     }
 
     public function lists($request){
-        $data = Folder::
-        when($request->type, function ($query, $type) {
+        $data = Folder::with('type')
+        ->when($request->type, function ($query, $type) {
             if ($type == 'shared') {
                 $query->whereHas('shares', function ($q) {
                     $q->where('user_id', \Auth::id());

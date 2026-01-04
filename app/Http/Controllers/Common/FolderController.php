@@ -35,6 +35,8 @@ class FolderController extends Controller
             default:
                 return inertia('Modules/Photographer/Folders/Index',[
                     'currencies' => $this->dropdown->currencies(),
+                    'types' => $this->dropdown->names('Share'),
+                    'visibilities' => $this->dropdown->dropdowns('Visibility'),
                     'counts' => $this->view->counts()
                 ]);
         }

@@ -87,7 +87,7 @@
                                     <th style="width: 6%;" class="text-center">Size</th>
                                     <th style="width: 6%;" class="text-center">Files</th>
                                     <th style="width: 14%;" class="text-center">Last Modified</th>
-                                    <th style="width: 7%;" class="text-center">Public</th>
+                                    <th style="width: 7%;" class="text-center">Visibility</th>
                                     <th style="width: 7%;" class="text-center">Protected</th>
                                     <th style="width: 7%;"></th>
                                 </tr>
@@ -104,11 +104,10 @@
                                     <td class="text-center">{{ list.count}}</td>
                                     <td class="text-center">{{ list.updated_at }}</td>
                                     <td class="text-center">
-                                        <i v-if="list.is_public" class="ri-earth-fill text-primary fs-18"></i>
-                                        <i v-else class="ri-eye-off-line fs-18"></i>
+                                        <i class="fs-18" :class="list.type.icon+' '+list.type.color"></i>
                                     </td>
                                     <td class="text-center">
-                                        <i v-if="list.is_protected" class="ri-lock-fill text-primary fs-18"></i>
+                                        <i v-if="list.is_protected" class="ri-rotate-lock-fill text-primary fs-18"></i>
                                         <i v-else class="ri-lock-unlock-line fs-18"></i>
                                     </td>
                                     <td>
@@ -157,7 +156,7 @@
         </div>
     </BRow>
     <Delete ref="delete"/>
-    <Create @success="fetch()" @update="updateRow" :currencies="currencies" ref="create"/>
+    <Create @success="fetch()" :types="types" :visibilities="visibilities" @update="updateRow" :currencies="currencies" ref="create"/>
 </template>
 <script>
 import _ from 'lodash';
@@ -167,7 +166,7 @@ import PageHeader from '@/Shared/Components/PageHeader.vue';
 import Pagination from "@/Shared/Components/Pagination.vue";
 export default {
     components: { PageHeader, Pagination, Create, Delete },
-    props:['counts'],
+    props:['counts','types','visibilities'],
     data(){
         return {
             currentUrl: window.location.origin,

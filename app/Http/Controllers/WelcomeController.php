@@ -47,11 +47,11 @@ class WelcomeController extends Controller
                     'end'            => now()->addDays(7),
                     'is_autorenew'   => false, 
                 ]);
-                $subsription->histories()->create([
-                    'status_id'      => 11,
-                    'start'          => now(),
-                    'end'            => now()->addDays(7),
-                ]);
+                // $subsription->histories()->create([
+                //     'status_id'      => 11,
+                //     'start'          => now(),
+                //     'end'            => now()->addDays(7),
+                // ]);
                 Auth::login($user);
             }
 

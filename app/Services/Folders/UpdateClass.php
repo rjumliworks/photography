@@ -13,6 +13,7 @@ class UpdateClass
         $data = Folder::find($request->id);
         $data->name = $request->name;
         $data->description = $request->description;
+        $data->type_id = $request->type_id;
         $data->save();
 
         $data = Folder::find($request->id);
